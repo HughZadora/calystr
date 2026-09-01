@@ -15,24 +15,24 @@ Calystr is developed through GitHub branches and pull requests.
 
 ## Tooling policy
 
-Commodity engineering gates must use mature ecosystem tools rather than bespoke scripts. Calystr currently standardises on Prettier, ESLint, TypeScript, lint-staged, markdownlint, markdown-link-check, yq, sq, CUE, OPA and Node's built-in test runner. Project-specific invariant tests may contain bespoke assertions, but they must not reimplement generic format, lint, type, link, schema, policy, security or test-runner functionality.
+Commodity engineering gates must use mature ecosystem tools rather than bespoke scripts. Project-specific invariant tests may contain bespoke assertions, but they must not reimplement generic format, lint, type, link, schema, policy, security or test-runner functionality.
 
 Before introducing a new gate or generating its configuration, resolve the current date and platform, check the relevant tool's official current support, resolve runtime requirements and verify dependency compatibility. User suggestions, existing repository conventions and agent memory are inputs to assess rather than automatic authority.
+
+Package updates are not selected by version number alone. Calystr requires supported, compatible and supply-chain-mature releases. The pnpm workspace enforces a minimum release age; when the newest release is too young, use the newest mature compatible release instead of adding a permanent exception.
 
 ## Quality gates
 
 - lint-staged selects changed files from the Git diff in CI and delegates checks to the underlying ecosystem tools.
 - lint-staged tasks are non-mutating in CI; formatting is enforced with Prettier `--check` rather than rewriting the worktree.
-- Prettier checks formatting with a 120-column print width; `npm run format:check` remains the full-repository baseline command until the package-manager migration is complete.
+- Prettier checks formatting with a 120-column print width.
 - ESLint checks JavaScript and TypeScript.
 - TypeScript performs static type checking of the Pi extension boundary.
 - markdownlint checks Markdown structure.
 - markdown-link-check checks Markdown links directly; no bespoke link-check wrapper is used.
-- yq validates YAML structure in CI.
-- sq independently inspects structured JSON registries in CI.
 - CUE validates Calystr schemas and constraints.
 - OPA is the sole policy and assessment engine. Project tests exercise the real OPA boundary, so CI must install OPA before running the Node test suite.
 - Node's built-in test runner executes project-specific behavioural and architecture invariant tests.
 - CI uses Node 24 and current Node-24-compatible GitHub Actions.
 
-Dependabot tracks GitHub Actions and package-toolchain releases. CI must remain on supported runtimes without waiting for a user report.
+Dependabot tracks GitHub Actions and package-toolchain releases. Automated updates remain candidates: they are merged only after current support, compatibility, maturity and full CI evidence are verified.
