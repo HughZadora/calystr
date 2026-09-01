@@ -21,8 +21,7 @@ function summariseVerification(stdout) {
   const predicateTypes = [...new Set(results.map((item) => item?.verificationResult?.statement?.predicateType).filter(Boolean))];
   const verifiedTimestamps = results.reduce(
     (count, item) =>
-      count +
-      (Array.isArray(item?.verificationResult?.verifiedTimestamps) ? item.verificationResult.verifiedTimestamps.length : 0),
+      count + (Array.isArray(item?.verificationResult?.verifiedTimestamps) ? item.verificationResult.verifiedTimestamps.length : 0),
     0
   );
 
