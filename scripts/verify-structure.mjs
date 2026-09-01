@@ -10,7 +10,7 @@ const required = [
   'standard/commercial', 'standard/product', 'standard/design', 'standard/engineering', 'standard/security', 'standard/testing', 'standard/operations', 'standard/change-class',
   'compiler/parse', 'compiler/normalise', 'compiler/map', 'compiler/resolve', 'compiler/compile', 'compiler/validate', 'compiler/package',
   'policy/rego', 'adapters/pi', 'adapters/pi/extensions', 'adapters/pi/skills/calystr-intent', 'adapters/pi/skills/calystr-delivery',
-  'adapters/git', 'adapters/junit', 'adapters/sarif', 'adapters/cyclonedx',
+  'adapters/git', 'adapters/junit', 'adapters/sarif', 'adapters/cyclonedx', 'adapters/operations',
   'tests/model', 'tests/compiler', 'tests/mappings', 'tests/policy', 'tests/adapters', 'tests/integration', 'tests/adversarial',
   'examples/web-saas', 'examples/commercial-product', 'docs/architecture', 'docs/domain', 'docs/compiler', 'docs/standard', 'docs/runtime', 'docs/decisions', '.github/workflows', 'cue.mod'
 ];

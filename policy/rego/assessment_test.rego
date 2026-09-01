@@ -5,8 +5,8 @@ pass_input := {
   "standard": {"requiredEvidence": ["git", "tests"]},
   "blockers": [],
   "evidence": [
-    {"kind": "git", "status": "PASS", "digest": "sha256:1", "scope": {"commit": "abc123"}},
-    {"kind": "tests", "status": "PASS", "digest": "sha256:2", "scope": {"commit": "abc123"}},
+    {"kind": "git", "claim": "git", "status": "PASS", "digest": "sha256:1", "scope": {"commit": "abc123"}, "integrityValid": true, "trusted": true},
+    {"kind": "tests", "claim": "tests", "status": "PASS", "digest": "sha256:2", "scope": {"commit": "abc123"}, "integrityValid": true, "trusted": true},
   ],
 }
 
@@ -15,20 +15,31 @@ test_pass_when_all_required_current_evidence_exists if {
 }
 
 test_unknown_when_required_evidence_is_missing if {
-  result.verdict == "UNKNOWN" with input as object.remove(pass_input, ["evidence"])
+  missing := object.union(pass_input, {"evidence": []})
+  result.verdict == "UNKNOWN" with input as missing
 }
 
 test_stale_evidence_is_unknown if {
-  stale := object.union(pass_input, {"evidence": [{"kind": "git", "status": "PASS", "digest": "sha256:1", "scope": {"commit": "old"}}]})
+  stale := object.union(pass_input, {"evidence": [{"kind": "git", "claim": "git", "status": "PASS", "digest": "sha256:1", "scope": {"commit": "old"}, "integrityValid": true, "trusted": true}]})
   result.verdict == "UNKNOWN" with input as stale
 }
 
+test_tampered_evidence_fails if {
+  tampered := object.union(pass_input, {"evidence": [{"kind": "git", "claim": "git", "status": "PASS", "digest": "sha256:bad", "scope": {"commit": "abc123"}, "integrityValid": false, "trusted": true}]})
+  result.verdict == "FAIL" with input as tampered
+}
+
+test_untrusted_evidence_never_passes if {
+  fake := object.union(pass_input, {"evidence": [{"kind": "git", "claim": "fake", "status": "PASS", "digest": "sha256:1", "scope": {"commit": "abc123"}, "integrityValid": true, "trusted": false}]})
+  result.verdict == "UNKNOWN" with input as fake
+}
+
 test_failure_wins_over_missing_evidence if {
-  failed := object.union(pass_input, {"evidence": [{"kind": "git", "status": "FAIL", "digest": "sha256:1", "scope": {"commit": "abc123"}}]})
+  failed := object.union(pass_input, {"evidence": [{"kind": "git", "claim": "git", "status": "FAIL", "digest": "sha256:1", "scope": {"commit": "abc123"}, "integrityValid": true, "trusted": true}]})
   result.verdict == "FAIL" with input as failed
 }
 
 test_blocker_wins_over_failure if {
-  blocked := object.union(pass_input, {"blockers": ["business-decision"], "evidence": [{"kind": "git", "status": "FAIL", "digest": "sha256:1", "scope": {"commit": "abc123"}}]})
+  blocked := object.union(pass_input, {"blockers": ["business-decision"], "evidence": [{"kind": "git", "claim": "git", "status": "FAIL", "digest": "sha256:1", "scope": {"commit": "abc123"}, "integrityValid": true, "trusted": true}]})
   result.verdict == "BLOCKED" with input as blocked
 }
