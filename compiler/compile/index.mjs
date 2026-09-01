@@ -1,5 +1,6 @@
 import { composeStandard } from '../../standard/index.mjs';
 import { classifySurface, designVerificationContract } from '../../standard/design/index.mjs';
+import { loadSourceCatalogue } from '../../sources/index.mjs';
 import { adviseUnknowns, assertBusinessOnlyQuestions } from '../resolve/advisor.mjs';
 import { createImplementationPlan } from './plan.mjs';
 
@@ -46,6 +47,21 @@ function verificationFor(requirement, capabilities) {
   }));
 }
 
+async function versionMetadata({ standard, mappings }) {
+  const sourceCatalogue = await loadSourceCatalogue();
+  const sources = new Map(sourceCatalogue.map((source) => [source.id, source.version]));
+  const sourceVersions = Object.fromEntries(
+    [...new Set(mappings.map((mapping) => mapping.source))].sort().map((source) => [source, sources.get(source) ?? 'UNKNOWN'])
+  );
+  return Object.freeze({
+    schema: '1.0.0',
+    standard: standard.identity.version,
+    compiler: '1.0.0',
+    sources: sourceVersions,
+    harnessCompatibility: standard.harness.compatibility
+  });
+}
+
 export async function compileResolved(resolved) {
   const standard = await composeStandard({ version: '1.0.0', changeClass: resolved.requirement.changeClass });
   const advice = assertBusinessOnlyQuestions(adviseUnknowns(resolved.requirement.unknowns));
@@ -59,10 +75,12 @@ export async function compileResolved(resolved) {
     verification,
     standard
   });
+  const versions = await versionMetadata({ standard, mappings: resolved.mappings });
 
   return {
-    schemaVersion: '1.0.0',
-    compilerVersion: '1.0.0',
+    schemaVersion: versions.schema,
+    compilerVersion: versions.compiler,
+    versions,
     requirement: resolved.requirement,
     quantification: resolved.quantification,
     capabilities: resolved.capabilities,

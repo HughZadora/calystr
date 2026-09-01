@@ -3,6 +3,15 @@ import { requiredHarnessCapabilities } from '../adapters/pi/runtime-contract.mjs
 import { engineeringConfigurationContract } from './engineering/toolchain.mjs';
 
 const catalogueUrl = new URL('./catalog.json', import.meta.url);
+const initialImpact = Object.freeze({
+  schema: 'initial',
+  policy: 'initial',
+  requirements: 'initial',
+  verification: 'initial',
+  advisor: 'initial',
+  mappings: 'initial',
+  skills: 'initial'
+});
 
 export async function loadStandardCatalogue() {
   return JSON.parse(await readFile(catalogueUrl, 'utf8'));
@@ -12,7 +21,8 @@ export async function composeStandard({
   id = '@calystr/std-commercial-product',
   version = '1.0.0',
   profile = 'commercial-product',
-  changeClass = 'STANDARD'
+  changeClass = 'STANDARD',
+  impact = initialImpact
 } = {}) {
   const catalogue = await loadStandardCatalogue();
   const base = catalogue.profiles[profile];
@@ -22,6 +32,7 @@ export async function composeStandard({
 
   return Object.freeze({
     identity: { name: id, version },
+    impact: { ...impact },
     profile,
     changeClass,
     requiredOutcomes: [...base.requiredOutcomes],
@@ -31,7 +42,7 @@ export async function composeStandard({
     requiredReview: [...change.requiredReview],
     applicableConstraints: [...base.applicableConstraints],
     engineeringConfiguration: engineeringConfigurationContract(),
-    harness: { runtime: 'pi', requiredCapabilities: [...requiredHarnessCapabilities] },
+    harness: { runtime: 'pi', compatibility: 'pi-v1', requiredCapabilities: [...requiredHarnessCapabilities] },
     sourceRefs: [...catalogue.commercialSources]
   });
 }

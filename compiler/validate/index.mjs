@@ -1,3 +1,5 @@
+const standardImpactKeys = ['schema', 'policy', 'requirements', 'verification', 'advisor', 'mappings', 'skills'];
+
 export function validateCompiledProduct(compiled) {
   if (!compiled.requirement?.id) throw new Error('Compiled product requires a Requirement');
   if (!Array.isArray(compiled.capabilities) || compiled.capabilities.length === 0) {
@@ -35,5 +37,17 @@ export function validateCompiledProduct(compiled) {
   }
 
   if (compiled.standard.harness.runtime !== 'pi') throw new Error('V1 compiled standards must target Pi');
+  if (compiled.versions?.schema !== compiled.schemaVersion) throw new Error('Schema version metadata must be explicit');
+  if (compiled.versions?.compiler !== compiled.compilerVersion) throw new Error('Compiler version metadata must be explicit');
+  if (compiled.versions?.standard !== compiled.standard.identity.version) throw new Error('Standard version metadata must be explicit');
+  if (compiled.versions?.harnessCompatibility !== compiled.standard.harness.compatibility) {
+    throw new Error('Harness compatibility metadata must be explicit');
+  }
+  if (Object.values(compiled.versions?.sources ?? {}).some((version) => version === 'UNKNOWN')) {
+    throw new Error('Mapped source versions must resolve to source provenance');
+  }
+  for (const key of standardImpactKeys) {
+    if (!(key in (compiled.standard.impact ?? {}))) throw new Error(`Standard impact metadata is missing ${key}`);
+  }
   return compiled;
 }
