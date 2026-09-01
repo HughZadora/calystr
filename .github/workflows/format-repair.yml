@@ -1,4 +1,4 @@
-name: Repair formatting
+name: Export canonical formatting
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - chore/pnpm-security-toolchain
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   format:
@@ -31,14 +31,10 @@ jobs:
             compiler/parse/index.mjs \
             mappings/solution/index.mjs \
             standard/design/index.mjs
-      - name: Finalise format repair
-        run: |
-          rm .github/workflows/format-repair.yml
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          if git diff --cached --quiet; then
-            exit 0
-          fi
-          git commit -m "style(toolchain): apply canonical repository formatting"
-          git push
+      - name: Export exact formatting patch
+        run: git diff --binary > /tmp/prettier.patch
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: canonical-formatting-patch
+          path: /tmp/prettier.patch
+          if-no-files-found: error
