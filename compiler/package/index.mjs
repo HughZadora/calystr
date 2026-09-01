@@ -1,18 +1,17 @@
 import { createHash } from 'node:crypto';
+import { createProjectBinding } from './binding.mjs';
 
 export function packageCompiledProduct(compiled) {
   const serialised = JSON.stringify(compiled);
-  const digest = `sha256:${createHash('sha256').update(serialised).digest('hex')}`;
+  const artifactDigest = `sha256:${createHash('sha256').update(serialised).digest('hex')}`;
+  const binding = createProjectBinding({
+    standard: compiled.standard,
+    projectType: compiled.requirement.context.projectType
+  });
   return {
-    manifest: {
-      standard: compiled.standard.identity.name,
-      version: compiled.standard.identity.version,
-      digest,
-      projectType: compiled.requirement.context.projectType,
-      schemaVersion: compiled.schemaVersion,
-      compilerVersion: compiled.compilerVersion,
-      harness: 'pi'
-    },
+    manifest: binding.manifest,
+    lock: binding.lock,
+    artifactDigest,
     compiled
   };
 }
