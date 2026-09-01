@@ -14,6 +14,10 @@ const initialImpact = Object.freeze({
   skills: 'initial'
 });
 
+function contextualEvidence(projectType) {
+  return ['web', 'saas'].includes(projectType) ? ['design'] : [];
+}
+
 export async function loadStandardCatalogue() {
   return JSON.parse(await readFile(catalogueUrl, 'utf8'));
 }
@@ -36,11 +40,12 @@ export async function composeStandard({
     identity: { name: id, version },
     impact: { ...impact },
     profile,
+    projectType,
     changeClass,
     requiredOutcomes: [...base.requiredOutcomes],
     requiredQuality: [...base.requiredQuality],
     requiredVerification: [...base.requiredVerification],
-    requiredEvidence: [...change.requiredEvidence],
+    requiredEvidence: [...new Set([...change.requiredEvidence, ...contextualEvidence(projectType)])],
     requiredReview: [...change.requiredReview],
     applicableConstraints: [...base.applicableConstraints],
     maturity: commercialMaturityProfile({ projectType, changeClass }),

@@ -63,7 +63,11 @@ async function versionMetadata({ standard, mappings }) {
 }
 
 export async function compileResolved(resolved) {
-  const standard = await composeStandard({ version: '1.0.0', changeClass: resolved.requirement.changeClass });
+  const standard = await composeStandard({
+    version: '1.0.0',
+    changeClass: resolved.requirement.changeClass,
+    projectType: resolved.requirement.context.projectType
+  });
   const advice = assertBusinessOnlyQuestions(adviseUnknowns(resolved.requirement.unknowns));
   const design = designFor(resolved.requirement);
   const verification = verificationFor(resolved.requirement, resolved.capabilities);

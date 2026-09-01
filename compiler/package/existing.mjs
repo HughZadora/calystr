@@ -94,7 +94,11 @@ export async function initialiseExistingProject({
 } = {}) {
   const inspection = await inspectExistingProject({ cwd });
   const changeClass = inspection.capabilities.includes('payments') ? 'HIGH_RISK' : 'STANDARD';
-  const standard = await composeStandard({ version: '1.0.0', changeClass });
+  const standard = await composeStandard({
+    version: '1.0.0',
+    changeClass,
+    projectType: inspection.project.projectType
+  });
   const binding = createProjectBinding({ standard, projectType: inspection.project.projectType });
   const gitEvidence = collectGit({ cwd });
   const initialAssessment = await assess({
