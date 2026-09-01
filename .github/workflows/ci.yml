@@ -22,7 +22,14 @@ jobs:
           go-version: '1.24.x'
       - name: Install CUE
         run: go install cuelang.org/go/cmd/cue@v0.14.1
-      - name: Verify frozen structure and Node contracts
+      - name: Install OPA
+        run: |
+          curl -fsSL -o /usr/local/bin/opa https://github.com/open-policy-agent/opa/releases/download/v1.20.1/opa_linux_amd64_static
+          chmod +x /usr/local/bin/opa
+          opa version
+      - name: Verify structure and Node contracts
         run: npm test
       - name: Validate CUE model
         run: cue vet ./...
+      - name: Test OPA policy
+        run: opa test policy/rego -v
