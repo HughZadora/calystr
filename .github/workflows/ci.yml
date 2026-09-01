@@ -14,19 +14,35 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+      - name: Install Node quality tools
+        run: npm install --ignore-scripts --no-audit --no-fund
       - uses: actions/setup-go@v5
         with:
           go-version: '1.24.x'
-      - name: Install CUE
-        run: go install cuelang.org/go/cmd/cue@v0.14.1
+      - name: Install CUE and structured-data tools
+        run: |
+          go install cuelang.org/go/cmd/cue@v0.14.1
+          go install github.com/mikefarah/yq/v4@v4.53.3
+          go install github.com/neilotoole/sq@v0.50.2
       - name: Install OPA
         run: |
           curl -fsSL -o /usr/local/bin/opa https://github.com/open-policy-agent/opa/releases/download/v1.20.1/opa_linux_amd64_static
           chmod +x /usr/local/bin/opa
           opa version
+      - name: Run changed-file quality gates
+        env:
+          CALYSTR_QUALITY_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: npm run quality:changed
+      - name: Verify yq and sq against repository data
+        run: |
+          yq -e '.jobs.verify["runs-on"] == "ubuntu-latest"' .github/workflows/ci.yml >/dev/null
+          cat standard/catalog.json | sq inspect >/dev/null
+          cat sources/catalog.json | sq inspect >/dev/null
       - name: Verify structure and Node contracts
         run: npm test
       - name: Validate CUE model

@@ -1,0 +1,8 @@
+node_modules/
+coverage/
+dist/
+*.tgz
+policy/rego/
+model/**/*.cue
+standard/**/*.cue
+cue.mod/

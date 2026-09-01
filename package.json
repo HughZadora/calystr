@@ -4,12 +4,66 @@
   "description": "Commercial Product Standard Compiler — compile engineering, product design and verification knowledge into executable standards for Pi.",
   "license": "Apache-2.0",
   "type": "module",
-  "keywords": ["pi-package", "commercial-product-standard", "agent-harness", "verification"],
-  "repository": {"type": "git", "url": "https://github.com/HughZadora/calystr.git"},
-  "engines": {"node": ">=20"},
-  "bin": {"calystr": "compiler/package/cli.mjs"},
-  "scripts": {"test": "node scripts/verify-structure.mjs && node --test", "verify:structure": "node scripts/verify-structure.mjs", "golden": "node compiler/package/cli.mjs golden"},
-  "pi": {"extensions": ["adapters/pi/extensions/calystr.ts"], "skills": ["adapters/pi/skills"]},
-  "peerDependencies": {"@mariozechner/pi-coding-agent": "*"},
-  "files": ["model", "sources", "mappings", "standard", "compiler", "policy", "adapters", "examples", "docs", "cue.mod", "scripts", "VERSION", "AGENTS.md", "README.md", "LICENSE"]
+  "keywords": [
+    "pi-package",
+    "commercial-product-standard",
+    "agent-harness",
+    "verification"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HughZadora/calystr.git"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "bin": {
+    "calystr": "compiler/package/cli.mjs"
+  },
+  "scripts": {
+    "test": "node scripts/verify-structure.mjs && node --test",
+    "verify:structure": "node scripts/verify-structure.mjs",
+    "golden": "node compiler/package/cli.mjs golden",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint:eslint": "eslint .",
+    "lint:markdown": "markdownlint-cli2 \"**/*.md\" \"!node_modules/**\"",
+    "lint:links": "node scripts/markdown-links.mjs",
+    "quality:changed": "node scripts/quality-changed.mjs"
+  },
+  "pi": {
+    "extensions": [
+      "adapters/pi/extensions/calystr.ts"
+    ],
+    "skills": [
+      "adapters/pi/skills"
+    ]
+  },
+  "peerDependencies": {
+    "@mariozechner/pi-coding-agent": "*"
+  },
+  "devDependencies": {
+    "eslint": "10.9.1",
+    "markdown-link-check": "3.15.0",
+    "markdownlint-cli2": "0.23.2",
+    "prettier": "3.9.6",
+    "typescript-eslint": "8.69.0"
+  },
+  "files": [
+    "model",
+    "sources",
+    "mappings",
+    "standard",
+    "compiler",
+    "policy",
+    "adapters",
+    "examples",
+    "docs",
+    "cue.mod",
+    "scripts",
+    "VERSION",
+    "AGENTS.md",
+    "README.md",
+    "LICENSE"
+  ]
 }

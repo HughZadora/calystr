@@ -10,3 +10,13 @@ Calystr is developed through GitHub branches and pull requests.
 - One-file-per-commit development is prohibited.
 - Tests must accompany behavioural changes.
 - CI must not modify the working tree.
+
+## Quality gates
+
+- Prettier checks formatting on changed JavaScript, TypeScript, JSON, JSONC, and Markdown files.
+- ESLint checks changed JavaScript and TypeScript files.
+- markdownlint checks changed Markdown files.
+- markdown-link-check checks links in changed Markdown files; `npm run lint:links` checks all repository Markdown.
+- yq validates YAML structure in CI.
+- sq parses repository JSON catalogues in CI as an independent structured-data check.
+- `npm run quality:changed` runs the changed-file quality gate used by CI.
