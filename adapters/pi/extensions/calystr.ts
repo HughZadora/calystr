@@ -5,12 +5,7 @@ function formatAdvice(advice: any[]): string {
   if (!advice.length) return 'Business decisions: none required';
   return advice
     .map((item) => {
-      const options = item.options
-        .map(
-          (option: any) =>
-            `  - ${option.id}: ${option.label} — ${option.tradeOffs.join('; ')}`
-        )
-        .join('\n');
+      const options = item.options.map((option: any) => `  - ${option.id}: ${option.label} — ${option.tradeOffs.join('; ')}`).join('\n');
       return [`Decision: ${item.question}`, options, `Recommendation: ${item.recommendation}`, `Reason: ${item.reason}`].join('\n');
     })
     .join('\n\n');
@@ -28,10 +23,7 @@ export default function calystrExtension(pi: ExtensionAPI): void {
       try {
         const output = await compileIntent(intent);
         const solutions = output.compiled.solutions
-          .map(
-            (item: any) =>
-              `${item.capability}: ${item.decision}${item.candidate ? ` (${item.candidate})` : ''} — ${item.why}`
-          )
+          .map((item: any) => `${item.capability}: ${item.decision}${item.candidate ? ` (${item.candidate})` : ''} — ${item.why}`)
           .join('\n');
         const message = [
           '[Calystr executable product standard]',

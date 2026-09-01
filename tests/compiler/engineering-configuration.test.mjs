@@ -1,10 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { compileIntent } from '../../compiler/index.mjs';
-import {
-  ENGINEERING_CONFIGURATION_SEQUENCE,
-  resolveEngineeringConfiguration
-} from '../../standard/engineering/toolchain.mjs';
+import { ENGINEERING_CONFIGURATION_SEQUENCE, resolveEngineeringConfiguration } from '../../standard/engineering/toolchain.mjs';
 
 test('compiled standard exposes current toolchain discovery as a core pre-configuration rule', async () => {
   const output = await compileIntent('Customer booking and online payment SaaS');

@@ -22,15 +22,7 @@
         "maintainability",
         "commercial-fit"
       ],
-      "requiredVerification": [
-        "requirement",
-        "design",
-        "code",
-        "system",
-        "user",
-        "operation",
-        "release"
-      ],
+      "requiredVerification": ["requirement", "design", "code", "system", "user", "operation", "release"],
       "applicableConstraints": [
         "pi-only-v1",
         "requirement-derived-coverage",
