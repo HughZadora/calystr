@@ -2,6 +2,7 @@ node_modules/
 coverage/
 dist/
 *.tgz
+pnpm-lock.yaml
 policy/rego/
 model/**/*.cue
 standard/**/*.cue
