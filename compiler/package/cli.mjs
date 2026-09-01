@@ -4,6 +4,7 @@ import { compileIntent } from '../index.mjs';
 import { collectGitEvidence } from '../../adapters/git/index.mjs';
 import { evaluateAssessment } from '../../policy/evaluate.mjs';
 import { initialiseExistingProject } from './existing.mjs';
+import { checkProjectUpgrade, upgradeProject } from './upgrade.mjs';
 
 const [command = 'help', ...args] = process.argv.slice(2);
 
@@ -60,8 +61,17 @@ if (command === 'compile') {
   if (!inputPath) throw new Error('Usage: calystr assess <assessment-input.json>');
   const input = JSON.parse(await readFile(inputPath, 'utf8'));
   print(await evaluateAssessment(input));
+} else if (command === 'check-upgrades') {
+  const candidatePath = args[0];
+  if (!candidatePath) throw new Error('Usage: calystr check-upgrades <standard-candidate.json>');
+  print(await checkProjectUpgrade({ candidatePath }));
+} else if (command === 'upgrade') {
+  const allowMajor = args.includes('--major');
+  const candidatePath = args.find((arg) => arg !== '--major');
+  if (!candidatePath) throw new Error('Usage: calystr upgrade <standard-candidate.json> [--major]');
+  print(await upgradeProject({ candidatePath, allowMajor }));
 } else {
   process.stdout.write(
-    'Calystr 1.0.0\nCommands: compile <intent>, init <intent>, init --existing, audit, assess <input.json>, golden\n'
+    'Calystr 1.0.0\nCommands: compile <intent>, init <intent>, init --existing, audit, assess <input.json>, check-upgrades <candidate.json>, upgrade <candidate.json> [--major], golden\n'
   );
 }
