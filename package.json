@@ -15,7 +15,7 @@
     "url": "https://github.com/HughZadora/calystr.git"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=24"
   },
   "bin": {
     "calystr": "compiler/package/cli.mjs"
@@ -28,8 +28,10 @@
     "format:check": "prettier --check .",
     "lint:eslint": "eslint .",
     "lint:markdown": "markdownlint-cli2 \"**/*.md\" \"!node_modules/**\"",
-    "lint:links": "node scripts/markdown-links.mjs",
-    "quality:changed": "node scripts/quality-changed.mjs"
+    "lint:links": "markdown-link-check -q -c .markdown-link-check.json README.md AGENTS.md CHANGELOG.md CONTRIBUTING.md SECURITY.md adapters compiler docs examples mappings model policy sources standard tests .github",
+    "typecheck": "tsc --noEmit",
+    "quality:diff": "lint-staged --continue-on-error",
+    "quality:all": "npm run format:check && npm run lint:eslint && npm run lint:markdown && npm run lint:links && npm run typecheck"
   },
   "pi": {
     "extensions": [
@@ -40,10 +42,12 @@
     ]
   },
   "peerDependencies": {
-    "@mariozechner/pi-coding-agent": "*"
+    "@earendil-works/pi-coding-agent": ">=0.84.0 <1"
   },
   "devDependencies": {
+    "@earendil-works/pi-coding-agent": "0.84.4",
     "eslint": "10.9.1",
+    "lint-staged": "17.4.1",
     "markdown-link-check": "3.15.0",
     "markdownlint-cli2": "0.23.2",
     "prettier": "3.9.6",

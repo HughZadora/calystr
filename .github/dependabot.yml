@@ -1,0 +1,20 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      quality-toolchain:
+        patterns:
+          - eslint
+          - lint-staged
+          - markdown-link-check
+          - markdownlint-cli2
+          - prettier
+          - typescript
+          - typescript-eslint
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly

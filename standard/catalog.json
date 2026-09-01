@@ -5,6 +5,7 @@
         "requirements.traceable",
         "solution.mature-first",
         "design.first-class",
+        "engineering.current-supported-toolchain-resolved-before-configuration",
         "implementation.verifiable",
         "evidence.external-fact",
         "assessment.opa-governed",
@@ -21,24 +22,41 @@
         "maintainability",
         "commercial-fit"
       ],
-      "requiredVerification": [
-        "requirement",
-        "design",
-        "code",
-        "system",
-        "user",
-        "operation",
-        "release"
-      ],
-      "applicableConstraints": ["pi-only-v1", "requirement-derived-coverage", "unknown-never-pass"]
+      "requiredVerification": ["requirement", "design", "code", "system", "user", "operation", "release"],
+      "applicableConstraints": [
+        "pi-only-v1",
+        "requirement-derived-coverage",
+        "unknown-never-pass",
+        "current-date-platform-first",
+        "official-support-before-configuration",
+        "runtime-and-dependency-compatibility-before-generation",
+        "single-pass-configuration-after-resolution",
+        "no-stale-template-version-defaults",
+        "mainstream-stack-native-tools-before-custom-gates"
+      ]
     }
   },
   "changeClasses": {
-    "TRIVIAL": {"requiredEvidence": ["git"], "requiredReview": []},
-    "SMALL": {"requiredEvidence": ["git", "tests"], "requiredReview": []},
-    "STANDARD": {"requiredEvidence": ["git", "tests", "security"], "requiredReview": ["implementation"]},
-    "HIGH_RISK": {"requiredEvidence": ["git", "tests", "security", "sbom", "operations"], "requiredReview": ["implementation", "security"]},
-    "CRITICAL": {"requiredEvidence": ["git", "tests", "security", "sbom", "operations", "release-provenance"], "requiredReview": ["implementation", "security", "human"]}
+    "TRIVIAL": {
+      "requiredEvidence": ["git"],
+      "requiredReview": []
+    },
+    "SMALL": {
+      "requiredEvidence": ["git", "tests"],
+      "requiredReview": []
+    },
+    "STANDARD": {
+      "requiredEvidence": ["git", "tests", "security"],
+      "requiredReview": ["implementation"]
+    },
+    "HIGH_RISK": {
+      "requiredEvidence": ["git", "tests", "security", "sbom", "operations"],
+      "requiredReview": ["implementation", "security"]
+    },
+    "CRITICAL": {
+      "requiredEvidence": ["git", "tests", "security", "sbom", "operations", "release-provenance"],
+      "requiredReview": ["implementation", "security", "human"]
+    }
   },
   "commercialSources": ["iso-12207", "iso-29148", "iso-16326", "itil", "iso-20000", "oscal"]
 }
