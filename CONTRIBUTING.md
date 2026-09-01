@@ -20,6 +20,7 @@ Before introducing a new gate, check the current mainstream tool for the relevan
 ## Quality gates
 
 - lint-staged selects changed files from the Git diff in CI and delegates checks to the underlying ecosystem tools.
+- lint-staged tasks are non-mutating in CI; formatting is enforced with Prettier `--check` rather than rewriting the worktree.
 - Prettier checks formatting; `npm run format:check` remains the full-repository baseline command.
 - ESLint checks JavaScript and TypeScript.
 - TypeScript performs static type checking of the Pi extension boundary.
