@@ -1,9 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { spawnSync } from 'node:child_process';
 import { compileIntent } from '../../compiler/index.mjs';
 import { collectGitEvidence } from '../../adapters/git/index.mjs';
 import { tapToEvidence } from '../../adapters/junit/tap.mjs';
+import { runNodeTests } from '../../adapters/junit/node-test.mjs';
 import { sarifToEvidence } from '../../adapters/sarif/index.mjs';
 import { cyclonedxToEvidence } from '../../adapters/cyclonedx/index.mjs';
 import { operationsToEvidence } from '../../adapters/operations/index.mjs';
@@ -17,10 +17,9 @@ test('V1 golden booking/payment SaaS reaches OPA PASS with current external evid
   assert.equal(payment.candidate, 'stripe-payments');
   const git = collectGitEvidence();
   const commit = git.scope.commit;
-  const nativeTests = spawnSync(process.execPath, ['--test', '--test-reporter=tap', 'tests/fixtures/golden-compiler-behaviour.test.mjs'], { encoding: 'utf8' });
+  const nativeTests = runNodeTests(['tests/fixtures/golden-compiler-behaviour.test.mjs']);
   assert.equal(nativeTests.status, 0, nativeTests.stderr);
-  const tapOutput = [nativeTests.stdout, nativeTests.stderr].filter(Boolean).join('\n');
-  const tests = tapToEvidence(tapOutput, { commit, exitCode: nativeTests.status, artifact: 'native-node-test.tap' });
+  const tests = tapToEvidence(nativeTests.output, { commit, exitCode: nativeTests.status, artifact: 'native-node-test.tap' });
   const security = sarifToEvidence({ version: '2.1.0', runs: [{ results: [] }] }, { commit });
   const sbom = cyclonedxToEvidence({ bomFormat: 'CycloneDX', specVersion: '1.6', components: [{ name: 'calystr' }] }, { commit });
   const operations = operationsToEvidence({ deploy: true, rollback: true, monitoring: true, alerting: true, recovery: true, backup: true, upgrade: true, failureHandling: true }, { commit });
