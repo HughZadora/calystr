@@ -1,57 +1,47 @@
 # Development Plan
 
-## Phase 0 — Repository and governance
+## Phase 1 — Complete architecture and framework foundation
 
-Establish repository topology, contribution rules, CI location, architecture decision records, and development conventions.
+Phase 1 establishes the complete project topology and framework before feature work: canonical domain boundaries; upstream source packs; mapping boundaries; standard families; compiler stages; OPA policy boundary; Pi/evidence adapters; test architecture; examples; documentation; package metadata; CUE module; CI structure verification.
 
-## Phase 1 — Architecture and domain foundation
-
-Establish the complete project structure first. Define the canonical domain model and its validation/test boundaries for Requirement, Capability, Solution, Design, Standard, Evidence and Assessment. No runtime implementation is allowed to create a competing structure.
-
-**Exit gate:** repository topology is stable; domain contracts are explicit; tests can target each architectural boundary.
+**Exit gate:** every frozen V1 repository boundary exists; no competing framework remains; automated structure verification passes; later phases have an explicit implementation home.
 
 ## Phase 2 — Agent Runtime Contract
 
-Define session, goal, run, round, step, handoff and execution semantics against the Phase 1 topology.
+Define Session, Goal, Run, Round, Step, Handoff, Context and Subagent contracts inside the established framework. Do not create a second harness.
 
-## Phase 3 — CUE schema and constraints
+## Phase 3 — CUE Model
 
-Encode the model and runtime-facing contracts in CUE where schema/constraint enforcement is required.
+Implement schemas, constraints and compiled-standard validation using CUE.
 
-## Phase 4 — Knowledge mapping
+## Phase 4 — Mapping
 
-Implement controlled mappings and source handling without moving domain ownership into adapters or compiler code.
+Implement initial mappings for grill-me, Superpowers, Anthropic Skills, OpenAI Harness, DeepSeek concepts, Apple HIG and Impeccable.
 
-## Phase 5 — Standard composition
+## Phase 5 — Commercial Standard
 
-Implement standard composition and validation.
+Map 12207, 29148, 16326, ITIL and risk-selected OSCAL controls into commercial outcomes.
 
-## Phase 6 — Solution registry
+## Phase 6 — Solution Registry
 
-Implement solution registration and retrieval within the established domain and standard boundaries.
+Implement candidate search, evidence collection, fitness evaluation and ADOPT/ADAPT/COMBINE/BUILD recommendations.
 
-## Phase 7 — OPA assessment
+## Phase 7 — OPA Assessment
 
-Implement policy evaluation and assessment paths.
+Implement Requirement + Standard + Evidence → Assessment gates with UNKNOWN preservation.
 
-## Phase 8 — Evidence adapters
+## Phase 8 — Evidence Adapters
 
-Implement evidence integrations behind the adapter boundary.
+Implement Git, JUnit/TAP, SARIF and CycloneDX canonical evidence adapters.
 
-## Phase 9 — Design and UX verification
+## Phase 9 — Design Verification
 
-Verify product and design outputs against standards and evidence.
+Implement accessibility, responsive, interaction, browser/user-journey and deterministic UX verification paths.
 
-## Phase 10 — Pi package and golden product
+## Phase 10 — Pi Package + Golden Product
 
-Integrate the runtime adapter and produce the first golden end-to-end product.
+Package Standard, Skills, Advisor, Policy, Evidence and Extension for direct Pi Git installation and prove the booking + online-payment SaaS golden flow.
 
-## Commit policy
+## Git discipline
 
-A commit represents one coherent logical architectural or functional change. A single file must never be the unit of a commit merely because it is a file. Related files are committed together when they form one reviewable change.
-
-## Development flow
-
-`feature/branch` → implementation → tests → review → merge to `main`.
-
-Direct architectural drift on `main` is prohibited.
+GitHub is the development system of record. Commits represent coherent logical work, not files. CI never modifies the work tree.

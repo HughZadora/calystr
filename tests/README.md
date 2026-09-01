@@ -1,3 +1,3 @@
 # Tests
 
-Tests mirror architectural boundaries. Contract tests protect stable interfaces; integration tests protect cross-boundary behaviour; golden tests protect end-to-end product invariants.
+Tests mirror architecture boundaries: model, compiler, mappings, policy, adapters, integration and adversarial. Golden product testing is added as end-to-end behaviour becomes executable.
