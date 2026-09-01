@@ -1,0 +1,8 @@
+[
+  {"id":"MAP-COM-12207-001","source":"iso-12207","target":"outcome-catalogue","meaning":"Represent lifecycle activities as required outcomes rather than a hard state machine."},
+  {"id":"MAP-COM-29148-001","source":"iso-29148","target":"requirement-model","meaning":"Requirements must be traceable, testable and connected to acceptance."},
+  {"id":"MAP-COM-16326-001","source":"iso-16326","target":"planning-outcomes","meaning":"Apply planning, resources, risk and milestone outcomes where change class requires them."},
+  {"id":"MAP-COM-ITIL-001","source":"itil","target":"operations-outcomes","meaning":"Apply incident, problem, change, service and SLA outcomes to release/operations/support."},
+  {"id":"MAP-COM-20000-001","source":"iso-20000","target":"service-outcomes","meaning":"Apply service quality and operational management outcomes to managed/production services."},
+  {"id":"MAP-COM-OSCAL-001","source":"oscal","target":"security-controls","meaning":"Select parameterised controls only for HIGH_RISK and CRITICAL requirements."}
+]

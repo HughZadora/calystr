@@ -1,0 +1,44 @@
+{
+  "profiles": {
+    "commercial-product": {
+      "requiredOutcomes": [
+        "requirements.traceable",
+        "solution.mature-first",
+        "design.first-class",
+        "implementation.verifiable",
+        "evidence.external-fact",
+        "assessment.opa-governed",
+        "release.reproducible",
+        "operations.recoverable"
+      ],
+      "requiredQuality": [
+        "functional",
+        "design",
+        "engineering",
+        "security",
+        "reliability",
+        "operability",
+        "maintainability",
+        "commercial-fit"
+      ],
+      "requiredVerification": [
+        "requirement",
+        "design",
+        "code",
+        "system",
+        "user",
+        "operation",
+        "release"
+      ],
+      "applicableConstraints": ["pi-only-v1", "requirement-derived-coverage", "unknown-never-pass"]
+    }
+  },
+  "changeClasses": {
+    "TRIVIAL": {"requiredEvidence": ["git"], "requiredReview": []},
+    "SMALL": {"requiredEvidence": ["git", "tests"], "requiredReview": []},
+    "STANDARD": {"requiredEvidence": ["git", "tests", "security"], "requiredReview": ["implementation"]},
+    "HIGH_RISK": {"requiredEvidence": ["git", "tests", "security", "sbom", "operations"], "requiredReview": ["implementation", "security"]},
+    "CRITICAL": {"requiredEvidence": ["git", "tests", "security", "sbom", "operations", "release-provenance"], "requiredReview": ["implementation", "security", "human"]}
+  },
+  "commercialSources": ["iso-12207", "iso-29148", "iso-16326", "itil", "iso-20000", "oscal"]
+}
