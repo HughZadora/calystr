@@ -5,23 +5,10 @@
   "description": "Commercial Product Standard Compiler — compile engineering, product design and verification knowledge into executable standards for Pi.",
   "license": "Apache-2.0",
   "type": "module",
-  "engines": {
-    "node": ">=20"
-  },
+  "engines": { "node": ">=20" },
   "scripts": {
-    "test": "node scripts/verify-structure.mjs",
+    "test": "node scripts/verify-structure.mjs && node --test",
     "verify:structure": "node scripts/verify-structure.mjs"
   },
-  "files": [
-    "model",
-    "sources",
-    "mappings",
-    "standard",
-    "compiler",
-    "policy",
-    "adapters",
-    "docs",
-    "VERSION",
-    "AGENTS.md"
-  ]
+  "files": ["model", "sources", "mappings", "standard", "compiler", "policy", "adapters", "docs", "VERSION", "AGENTS.md"]
 }
