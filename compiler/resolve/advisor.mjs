@@ -25,8 +25,43 @@ const businessDecisions = {
 export function adviseUnknowns(unknowns = []) {
   return unknowns.map((unknown) => {
     const decision = businessDecisions[unknown];
-    if (!decision) return { unknown, type: 'business', question: unknown, options: [], recommendation: null, reason: 'Business judgement is required.' };
+    if (!decision) {
+      return {
+        unknown,
+        type: 'business',
+        question: unknown,
+        options: [],
+        recommendation: null,
+        reason: 'Business judgement is required.'
+      };
+    }
     return { unknown, type: 'business', ...decision };
+  });
+}
+
+export function resolveBusinessDecisions(requirement, selections = {}) {
+  const unresolved = new Set(requirement.unknowns ?? []);
+  const accepted = {};
+
+  for (const [unknown, selection] of Object.entries(selections)) {
+    if (!unresolved.has(unknown)) throw new Error(`Business decision is not required by this Requirement: ${unknown}`);
+    const decision = businessDecisions[unknown];
+    if (!decision) throw new Error(`Unknown business decision: ${unknown}`);
+    if (!decision.options.some((option) => option.id === selection)) {
+      throw new Error(`Invalid option ${selection} for ${unknown}`);
+    }
+    unresolved.delete(unknown);
+    accepted[unknown] = selection;
+  }
+
+  return Object.freeze({
+    ...requirement,
+    context: { ...requirement.context, businessDecisions: accepted },
+    constraints: [
+      ...(requirement.constraints ?? []),
+      ...Object.entries(accepted).map(([unknown, selection]) => `business-decision:${unknown}=${selection}`)
+    ],
+    unknowns: [...unresolved]
   });
 }
 
