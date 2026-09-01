@@ -1,0 +1,7 @@
+{
+  "intent": "Build a commercial SaaS for customer booking and online payment",
+  "expectedCapabilities": ["booking", "payments", "relational-storage"],
+  "expectedPaymentSolution": "stripe-payments",
+  "expectedBookingDecision": "BUILD",
+  "expectedChangeClass": "HIGH_RISK"
+}

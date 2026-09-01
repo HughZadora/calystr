@@ -13,9 +13,11 @@ export function inferCapabilities(intent) {
   return [...new Set(capabilities)].sort();
 }
 
-export function parseIntent(intent, { changeClass = 'STANDARD', projectType = 'saas' } = {}) {
+export function parseIntent(intent, options = {}) {
+  const { projectType = 'saas' } = options;
   if (typeof intent !== 'string' || !intent.trim()) throw new Error('A non-empty user intent is required');
   const capabilities = inferCapabilities(intent);
+  const changeClass = options.changeClass ?? (capabilities.includes('payments') ? 'HIGH_RISK' : 'STANDARD');
   const unknowns = [];
   if (capabilities.includes('booking')) {
     unknowns.push('business:booking-cancellation-policy');

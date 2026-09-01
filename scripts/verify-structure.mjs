@@ -9,18 +9,15 @@ const required = [
   'mappings/agent', 'mappings/design', 'mappings/commercial', 'mappings/solution', 'mappings/verification',
   'standard/commercial', 'standard/product', 'standard/design', 'standard/engineering', 'standard/security', 'standard/testing', 'standard/operations', 'standard/change-class',
   'compiler/parse', 'compiler/normalise', 'compiler/map', 'compiler/resolve', 'compiler/compile', 'compiler/validate', 'compiler/package',
-  'policy/rego',
-  'adapters/pi', 'adapters/git', 'adapters/junit', 'adapters/sarif', 'adapters/cyclonedx',
+  'policy/rego', 'adapters/pi', 'adapters/pi/extensions', 'adapters/pi/skills/calystr-intent', 'adapters/pi/skills/calystr-delivery',
+  'adapters/git', 'adapters/junit', 'adapters/sarif', 'adapters/cyclonedx',
   'tests/model', 'tests/compiler', 'tests/mappings', 'tests/policy', 'tests/adapters', 'tests/integration', 'tests/adversarial',
-  'examples/web-saas', 'examples/commercial-product',
-  'docs/architecture', 'docs/domain', 'docs/compiler', 'docs/standard', 'docs/runtime', 'docs/decisions',
-  '.github/workflows', 'cue.mod'
+  'examples/web-saas', 'examples/commercial-product', 'docs/architecture', 'docs/domain', 'docs/compiler', 'docs/standard', 'docs/runtime', 'docs/decisions', '.github/workflows', 'cue.mod'
 ];
-
 for (const path of required) await access(path);
-
 const packageJson = JSON.parse(await readFile('package.json', 'utf8'));
 if (packageJson.name !== 'calystr') throw new Error('package name must be calystr');
 if (packageJson.license === 'MIT') throw new Error('MIT licence is prohibited');
-
-console.log(`Calystr Phase 1 structure verified (${required.length} boundaries).`);
+if (!packageJson.pi?.extensions?.includes('adapters/pi/extensions/calystr.ts')) throw new Error('Pi extension wiring missing');
+if (!packageJson.pi?.skills?.includes('adapters/pi/skills')) throw new Error('Pi skills wiring missing');
+console.log(`Calystr Phase 1 structure verified and Pi package wiring present (${required.length} boundaries).`);

@@ -1,14 +1,15 @@
 {
   "name": "calystr",
-  "version": "0.1.0",
-  "private": false,
+  "version": "1.0.0",
   "description": "Commercial Product Standard Compiler — compile engineering, product design and verification knowledge into executable standards for Pi.",
   "license": "Apache-2.0",
   "type": "module",
-  "engines": { "node": ">=20" },
-  "scripts": {
-    "test": "node scripts/verify-structure.mjs && node --test",
-    "verify:structure": "node scripts/verify-structure.mjs"
-  },
-  "files": ["model", "sources", "mappings", "standard", "compiler", "policy", "adapters", "docs", "VERSION", "AGENTS.md"]
+  "keywords": ["pi-package", "commercial-product-standard", "agent-harness", "verification"],
+  "repository": {"type": "git", "url": "https://github.com/HughZadora/calystr.git"},
+  "engines": {"node": ">=20"},
+  "bin": {"calystr": "compiler/package/cli.mjs"},
+  "scripts": {"test": "node scripts/verify-structure.mjs && node --test", "verify:structure": "node scripts/verify-structure.mjs", "golden": "node compiler/package/cli.mjs golden"},
+  "pi": {"extensions": ["adapters/pi/extensions/calystr.ts"], "skills": ["adapters/pi/skills"]},
+  "peerDependencies": {"@mariozechner/pi-coding-agent": "*"},
+  "files": ["model", "sources", "mappings", "standard", "compiler", "policy", "adapters", "examples", "docs", "cue.mod", "scripts", "VERSION", "AGENTS.md", "README.md", "LICENSE"]
 }

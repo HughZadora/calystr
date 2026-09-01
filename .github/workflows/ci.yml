@@ -33,3 +33,7 @@ jobs:
         run: cue vet ./...
       - name: Test OPA policy
         run: opa test policy/rego -v
+      - name: Verify golden compiler command
+        run: npm run golden > /tmp/calystr-golden.json
+      - name: Verify distributable package
+        run: npm pack --dry-run

@@ -1,0 +1,8 @@
+{
+  "runtime": "pi",
+  "standard": "@calystr/std-commercial-product",
+  "version": "1.0.0",
+  "requiredCapabilities": ["session","goal","context","skill-loading","tool-execution","subagent","resume","handoff"],
+  "extension": "extensions/calystr.ts",
+  "skills": ["skills/calystr-intent", "skills/calystr-delivery"]
+}

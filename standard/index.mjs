@@ -7,24 +7,16 @@ export async function loadStandardCatalogue() {
   return JSON.parse(await readFile(catalogueUrl, 'utf8'));
 }
 
-export async function composeStandard({ id = '@calystr/std-commercial-product', version = '0.1.0', profile = 'commercial-product', changeClass = 'STANDARD' } = {}) {
+export async function composeStandard({ id = '@calystr/std-commercial-product', version = '1.0.0', profile = 'commercial-product', changeClass = 'STANDARD' } = {}) {
   const catalogue = await loadStandardCatalogue();
   const base = catalogue.profiles[profile];
   const change = catalogue.changeClasses[changeClass];
   if (!base) throw new Error(`Unknown standard profile: ${profile}`);
   if (!change) throw new Error(`Unknown change class: ${changeClass}`);
-
   return Object.freeze({
-    identity: { name: id, version },
-    profile,
-    changeClass,
-    requiredOutcomes: [...base.requiredOutcomes],
-    requiredQuality: [...base.requiredQuality],
-    requiredVerification: [...base.requiredVerification],
-    requiredEvidence: [...change.requiredEvidence],
-    requiredReview: [...change.requiredReview],
-    applicableConstraints: [...base.applicableConstraints],
-    harness: { runtime: 'pi', requiredCapabilities: [...requiredHarnessCapabilities] },
-    sourceRefs: [...catalogue.commercialSources]
+    identity: { name: id, version }, profile, changeClass,
+    requiredOutcomes: [...base.requiredOutcomes], requiredQuality: [...base.requiredQuality], requiredVerification: [...base.requiredVerification],
+    requiredEvidence: [...change.requiredEvidence], requiredReview: [...change.requiredReview], applicableConstraints: [...base.applicableConstraints],
+    harness: { runtime: 'pi', requiredCapabilities: [...requiredHarnessCapabilities] }, sourceRefs: [...catalogue.commercialSources]
   });
 }

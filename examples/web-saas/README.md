@@ -1,3 +1,5 @@
-# Web SaaS example
+# Golden Web SaaS
 
-Reserved for the first representative SaaS standard-binding example.
+The V1 golden scenario is: `Build a commercial SaaS for customer booking and online payment`.
+
+Expected path: Intent → Requirement → Capability → Solution evaluation → Design → Verification matrix → JUnit/SARIF/CycloneDX/design/operations evidence → OPA Assessment.

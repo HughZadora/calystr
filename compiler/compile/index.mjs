@@ -3,9 +3,7 @@ import { classifySurface } from '../../standard/design/index.mjs';
 
 function designFor(requirement) {
   const surfaces = [];
-  if (requirement.capabilities.includes('booking') || requirement.capabilities.includes('payments')) {
-    surfaces.push({ id: 'surface-customer', kind: 'dashboard', mode: classifySurface({ kind: 'dashboard' }) });
-  }
+  if (requirement.capabilities.includes('booking') || requirement.capabilities.includes('payments')) surfaces.push({ id: 'surface-customer', kind: 'dashboard', mode: classifySurface({ kind: 'dashboard' }) });
   if (requirement.capabilities.includes('admin')) surfaces.push({ id: 'surface-admin', kind: 'admin', mode: classifySurface({ kind: 'admin' }) });
   return {
     id: 'DSN-001',
@@ -32,10 +30,10 @@ function verificationFor(requirement) {
 }
 
 export async function compileResolved(resolved) {
-  const standard = await composeStandard({ changeClass: resolved.requirement.changeClass });
+  const standard = await composeStandard({ version: '1.0.0', changeClass: resolved.requirement.changeClass });
   return {
     schemaVersion: '1.0.0',
-    compilerVersion: '0.1.0',
+    compilerVersion: '1.0.0',
     requirement: resolved.requirement,
     capabilities: resolved.capabilities,
     solutions: resolved.solutions,
