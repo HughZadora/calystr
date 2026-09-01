@@ -18,10 +18,15 @@ function summariseVerification(stdout) {
     throw new Error('gh attestation verify returned no verified attestations');
   }
 
-  const predicateTypes = [...new Set(results.map((item) => item?.verificationResult?.statement?.predicateType).filter(Boolean))];
+  const predicateTypes = [
+    ...new Set(results.map((item) => item?.verificationResult?.statement?.predicateType).filter(Boolean))
+  ];
   const verifiedTimestamps = results.reduce(
     (count, item) =>
-      count + (Array.isArray(item?.verificationResult?.verifiedTimestamps) ? item.verificationResult.verifiedTimestamps.length : 0),
+      count +
+      (Array.isArray(item?.verificationResult?.verifiedTimestamps)
+        ? item.verificationResult.verifiedTimestamps.length
+        : 0),
     0
   );
 
@@ -32,7 +37,14 @@ function summariseVerification(stdout) {
   };
 }
 
-export function collectReleaseProvenanceEvidence({ artifact, repository, revision, signerWorkflow, cwd = process.cwd(), ghPath = 'gh' }) {
+export function collectReleaseProvenanceEvidence({
+  artifact,
+  repository,
+  revision,
+  signerWorkflow,
+  cwd = process.cwd(),
+  ghPath = 'gh'
+}) {
   assertInput(artifact, 'artifact');
   assertInput(repository, 'repository');
   assertInput(revision, 'revision');
@@ -53,7 +65,9 @@ export function collectReleaseProvenanceEvidence({ artifact, repository, revisio
   if (signerWorkflow) args.push('--signer-workflow', signerWorkflow);
 
   const run = spawnSync(ghPath, args, { cwd, encoding: 'utf8' });
-  if (run.error) throw new Error(`GitHub CLI is required for release provenance verification: ${run.error.message}`);
+  if (run.error) {
+    throw new Error(`GitHub CLI is required for release provenance verification: ${run.error.message}`);
+  }
 
   const command = [ghPath, ...args].join(' ');
   if (run.status !== 0) {

@@ -18,7 +18,19 @@ test('release provenance delegates verification to gh and produces trusted revis
   const revision = '0123456789abcdef0123456789abcdef01234567';
   const { dir, path } = await fakeGh(`
 const args = process.argv.slice(2);
-const required = ['attestation', 'verify', 'dist/calystr.tgz', '--repo', 'HughZadora/calystr', '--source-digest', '${revision}', '--predicate-type', 'https://slsa.dev/provenance/v1', '--format', 'json'];
+const required = [
+  'attestation',
+  'verify',
+  'dist/calystr.tgz',
+  '--repo',
+  'HughZadora/calystr',
+  '--source-digest',
+  '${revision}',
+  '--predicate-type',
+  'https://slsa.dev/provenance/v1',
+  '--format',
+  'json'
+];
 if (required.some((value) => !args.includes(value))) process.exit(9);
 process.stdout.write(JSON.stringify([{ verificationResult: { statement: { predicateType: 'https://slsa.dev/provenance/v1' }, verifiedTimestamps: [{ type: 'rekor' }], signature: { certificate: { sourceRepository: 'HughZadora/calystr' } } } }]));
 `);
