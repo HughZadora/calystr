@@ -10,8 +10,32 @@ pass_input := {
   ],
 }
 
+critical_input := {
+  "targetRevision": "abc123",
+  "standard": {"requiredEvidence": ["git", "tests", "security", "sbom", "operations", "release-provenance"]},
+  "blockers": [],
+  "evidence": [
+    {"kind": "git", "claim": "git", "status": "PASS", "digest": "sha256:1", "scope": {"commit": "abc123"}, "integrityValid": true, "trusted": true},
+    {"kind": "tests", "claim": "tests", "status": "PASS", "digest": "sha256:2", "scope": {"commit": "abc123"}, "integrityValid": true, "trusted": true},
+    {"kind": "security", "claim": "security", "status": "PASS", "digest": "sha256:3", "scope": {"commit": "abc123"}, "integrityValid": true, "trusted": true},
+    {"kind": "sbom", "claim": "sbom", "status": "PASS", "digest": "sha256:4", "scope": {"commit": "abc123"}, "integrityValid": true, "trusted": true},
+    {"kind": "operations", "claim": "operations", "status": "PASS", "digest": "sha256:5", "scope": {"commit": "abc123"}, "integrityValid": true, "trusted": true},
+    {"kind": "release-provenance", "claim": "release", "status": "PASS", "digest": "sha256:6", "scope": {"commit": "abc123"}, "integrityValid": true, "trusted": true},
+  ],
+}
+
 test_pass_when_all_required_current_evidence_exists if {
   result.verdict == "PASS" with input as pass_input
+}
+
+test_critical_pass_requires_release_provenance if {
+  result.verdict == "PASS" with input as critical_input
+}
+
+test_critical_unknown_without_release_provenance if {
+  without_release := object.union(critical_input, {"evidence": array.slice(critical_input.evidence, 0, 5)})
+  result.verdict == "UNKNOWN" with input as without_release
+  result.missingEvidence == ["release-provenance"] with input as without_release
 }
 
 test_unknown_when_required_evidence_is_missing if {

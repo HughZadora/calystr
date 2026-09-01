@@ -32,6 +32,18 @@ calystr golden
 
 `init` creates only `.calystr/manifest.json` and `.calystr/lock.json` in the target project. Git remains project history. OPA is the final assessment engine; agent claims are not evidence and stale evidence cannot PASS.
 
+## Release provenance
+
+Release packaging is attested with GitHub artifact attestations and Sigstore by the `Release provenance` workflow. Calystr does not implement attestation cryptography itself.
+
+A release artifact can be externally verified with GitHub CLI while binding the verification to the expected repository and source revision:
+
+```bash
+gh attestation verify calystr-1.0.0.tgz --repo HughZadora/calystr --source-digest <commit> --format json
+```
+
+The Calystr provenance adapter executes this external verification and normalises the result into revision-scoped `release-provenance` Evidence. `CRITICAL` changes therefore require a real verified release attestation rather than an agent claim or an unverified bundle.
+
 ## Development
 
 GitHub is the system of record. Architecture is frozen before implementation; later work stays inside established boundaries. Commits are coherent logical units, never file-by-file commits.
