@@ -15,6 +15,7 @@ Calystr is developed through GitHub branches and pull requests.
 
 - Prettier checks formatting on changed JavaScript, TypeScript, JSON, JSONC, and Markdown files.
 - ESLint checks changed JavaScript and TypeScript files through the pinned TypeScript parser toolchain.
+- TypeScript 6.0.x is pinned for ESLint parser compatibility until typescript-eslint supports the TypeScript 7 API.
 - markdownlint checks changed Markdown files.
 - markdown-link-check checks links in changed Markdown files; `npm run lint:links` checks all repository Markdown.
 - yq validates YAML structure in CI.
