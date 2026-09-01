@@ -24,6 +24,19 @@ critical_input := {
   ],
 }
 
+commercial_input := {
+  "targetRevision": "abc123",
+  "requirementCoverage": {"required": 2, "verified": 2, "failed": 0},
+  "standard": {"requiredEvidence": ["git", "tests", "security", "design"]},
+  "blockers": [],
+  "evidence": [
+    {"kind": "git", "claim": "git", "status": "PASS", "digest": "sha256:1", "scope": {"commit": "abc123"}, "integrityValid": true, "trusted": true},
+    {"kind": "tests", "claim": "tests", "status": "PASS", "digest": "sha256:2", "scope": {"commit": "abc123"}, "integrityValid": true, "trusted": true},
+    {"kind": "security", "claim": "security", "status": "PASS", "digest": "sha256:3", "scope": {"commit": "abc123"}, "integrityValid": true, "trusted": true},
+    {"kind": "design", "claim": "design", "status": "PASS", "digest": "sha256:4", "scope": {"commit": "abc123"}, "integrityValid": true, "trusted": true},
+  ],
+}
+
 test_pass_when_all_required_current_evidence_exists if {
   result.verdict == "PASS" with input as pass_input
 }
@@ -66,4 +79,21 @@ test_failure_wins_over_missing_evidence if {
 test_blocker_wins_over_failure if {
   blocked := object.union(pass_input, {"blockers": ["business-decision"], "evidence": [{"kind": "git", "claim": "git", "status": "FAIL", "digest": "sha256:1", "scope": {"commit": "abc123"}, "integrityValid": true, "trusted": true}]})
   result.verdict == "BLOCKED" with input as blocked
+}
+
+test_commercial_readiness_requires_requirement_design_engineering_and_security_pass if {
+  result.requirementStatus == "PASS" with input as commercial_input
+  result.designStatus == "PASS" with input as commercial_input
+  result.engineeringStatus == "PASS" with input as commercial_input
+  result.securityStatus == "PASS" with input as commercial_input
+  result.evidenceStatus == "PASS" with input as commercial_input
+  result.commercialReadiness == "PASS" with input as commercial_input
+  result.knownGaps == [] with input as commercial_input
+}
+
+test_evidence_pass_does_not_hide_unknown_product_dimensions if {
+  result.verdict == "PASS" with input as pass_input
+  result.commercialReadiness == "UNKNOWN" with input as pass_input
+  "requirement-coverage:unknown" in result.knownGaps with input as pass_input
+  "design-verification:unknown" in result.knownGaps with input as pass_input
 }

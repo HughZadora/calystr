@@ -4,6 +4,7 @@ package assessment
 
 #Assessment: {
   id: string & !=""
+  verdict: #Verdict
   requirementStatus: #Verdict
   designStatus: #Verdict
   engineeringStatus: #Verdict
@@ -12,4 +13,8 @@ package assessment
   commercialReadiness: #Verdict
   knownGaps: [...string]
   confidence: number & >=0 & <=1
+  targetRevision?: string
+  missingEvidence?: [...string]
+  invalidEvidence?: [...string]
+  untrustedEvidence?: [...string]
 }
