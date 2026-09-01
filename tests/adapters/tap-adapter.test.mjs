@@ -8,7 +8,17 @@ test('TAP adapter normalises successful native test output', () => {
   assert.equal(evidence.details.passed, 1);
 });
 
+test('TAP adapter accepts valid TAP without an explicit version header', () => {
+  const evidence = tapToEvidence('# Subtest: x\nok 1 - x\n1..1\n', { commit: 'abc', exitCode: 0 });
+  assert.equal(evidence.status, 'PASS');
+  assert.equal(evidence.details.passed, 1);
+});
+
 test('TAP adapter marks native failures as FAIL', () => {
   const evidence = tapToEvidence('TAP version 13\nnot ok 1 - x\n1..1\n', { commit: 'abc', exitCode: 1 });
   assert.equal(evidence.status, 'FAIL');
+});
+
+test('TAP adapter rejects unrelated text', () => {
+  assert.throws(() => tapToEvidence('not test output', { commit: 'abc' }), /Invalid TAP output/);
 });
