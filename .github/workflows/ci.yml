@@ -29,7 +29,13 @@ jobs:
           test "$(node --version)" = "v24.20.0"
           test "$(pnpm --version)" = "12.1.0"
       - name: Run changed-file quality gates
-        run: pnpm run quality:diff -- --diff="${{ github.event.pull_request.base.sha || github.event.before }}...HEAD"
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          if [ -z "${BASE_SHA}" ] || [ "${BASE_SHA}" = "0000000000000000000000000000000000000000" ]; then
+            BASE_SHA="$(git rev-parse HEAD^)"
+          fi
+          pnpm exec lint-staged --continue-on-error --diff="${BASE_SHA}...HEAD"
       - name: Type-check TypeScript boundary
         run: pnpm run typecheck
       - name: Detect dead code and dependency drift

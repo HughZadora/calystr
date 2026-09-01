@@ -2,7 +2,7 @@ import { readFile } from 'node:fs/promises';
 
 const registryUrl = new URL('./registry.json', import.meta.url);
 
-export async function loadSolutionRegistry() {
+async function loadSolutionRegistry() {
   const registry = JSON.parse(await readFile(registryUrl, 'utf8'));
   const ids = new Set();
   for (const item of registry) {

@@ -1,4 +1,4 @@
-export const designModes = Object.freeze(['PERSUADE', 'OPERATE', 'READ', 'EXPERIENCE']);
+const designModes = Object.freeze(['PERSUADE', 'OPERATE', 'READ', 'EXPERIENCE']);
 
 export const designCriteria = Object.freeze([
   'purpose', 'clarity', 'hierarchy', 'consistency', 'accessibility', 'responsiveness',

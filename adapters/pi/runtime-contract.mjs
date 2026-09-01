@@ -1,4 +1,4 @@
-export const runtimeStates = Object.freeze(['ACTIVE', 'COMPLETE', 'BLOCKED', 'CANCELLED']);
+const runtimeStates = Object.freeze(['ACTIVE', 'COMPLETE', 'BLOCKED', 'CANCELLED']);
 
 export const requiredHarnessCapabilities = Object.freeze([
   'session', 'goal', 'context', 'skill-loading', 'tool-execution', 'subagent', 'resume', 'handoff'
