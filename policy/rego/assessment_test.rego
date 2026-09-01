@@ -24,10 +24,33 @@ critical_input := {
   ],
 }
 
+commercial_targets := {
+  "functional": "COMMERCIAL",
+  "design": "COMMERCIAL",
+  "engineering": "COMMERCIAL",
+  "security": "COMMERCIAL",
+  "reliability": "COMMERCIAL",
+  "operability": "COMMERCIAL",
+  "maintainability": "COMMERCIAL",
+  "commercialFit": "COMMERCIAL",
+}
+
+commercial_maturity := {
+  "functional": "COMMERCIAL",
+  "design": "COMMERCIAL",
+  "engineering": "COMMERCIAL",
+  "security": "COMMERCIAL",
+  "reliability": "COMMERCIAL",
+  "operability": "COMMERCIAL",
+  "maintainability": "COMMERCIAL",
+  "commercialFit": "COMMERCIAL",
+}
+
 commercial_input := {
   "targetRevision": "abc123",
   "requirementCoverage": {"required": 2, "verified": 2, "failed": 0},
-  "standard": {"requiredEvidence": ["git", "tests", "security", "design"]},
+  "standard": {"requiredEvidence": ["git", "tests", "security", "design"], "maturity": {"targets": commercial_targets}},
+  "maturity": commercial_maturity,
   "blockers": [],
   "evidence": [
     {"kind": "git", "claim": "git", "status": "PASS", "digest": "sha256:1", "scope": {"commit": "abc123"}, "integrityValid": true, "trusted": true},
@@ -81,14 +104,22 @@ test_blocker_wins_over_failure if {
   result.verdict == "BLOCKED" with input as blocked
 }
 
-test_commercial_readiness_requires_requirement_design_engineering_and_security_pass if {
+test_commercial_readiness_requires_all_product_dimensions_and_maturity_targets if {
   result.requirementStatus == "PASS" with input as commercial_input
   result.designStatus == "PASS" with input as commercial_input
   result.engineeringStatus == "PASS" with input as commercial_input
   result.securityStatus == "PASS" with input as commercial_input
   result.evidenceStatus == "PASS" with input as commercial_input
+  result.maturityStatus == "PASS" with input as commercial_input
   result.commercialReadiness == "PASS" with input as commercial_input
   result.knownGaps == [] with input as commercial_input
+}
+
+test_below_target_maturity_prevents_commercial_readiness if {
+  immature := object.union(commercial_input, {"maturity": object.union(commercial_maturity, {"security": "PRODUCTION"})})
+  result.maturityStatus == "FAIL" with input as immature
+  result.commercialReadiness == "FAIL" with input as immature
+  "maturity:security:below-target" in result.knownGaps with input as immature
 }
 
 test_evidence_pass_does_not_hide_unknown_product_dimensions if {

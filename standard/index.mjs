@@ -1,6 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import { requiredHarnessCapabilities } from '../adapters/pi/runtime-contract.mjs';
 import { engineeringConfigurationContract } from './engineering/toolchain.mjs';
+import { commercialMaturityProfile } from './commercial/maturity.mjs';
 
 const catalogueUrl = new URL('./catalog.json', import.meta.url);
 const initialImpact = Object.freeze({
@@ -22,6 +23,7 @@ export async function composeStandard({
   version = '1.0.0',
   profile = 'commercial-product',
   changeClass = 'STANDARD',
+  projectType = 'saas',
   impact = initialImpact
 } = {}) {
   const catalogue = await loadStandardCatalogue();
@@ -41,6 +43,7 @@ export async function composeStandard({
     requiredEvidence: [...change.requiredEvidence],
     requiredReview: [...change.requiredReview],
     applicableConstraints: [...base.applicableConstraints],
+    maturity: commercialMaturityProfile({ projectType, changeClass }),
     engineeringConfiguration: engineeringConfigurationContract(),
     harness: { runtime: 'pi', compatibility: 'pi-v1', requiredCapabilities: [...requiredHarnessCapabilities] },
     sourceRefs: [...catalogue.commercialSources]

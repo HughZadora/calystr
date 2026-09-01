@@ -140,6 +140,46 @@ design_status := kind_status("design")
 engineering_status := kind_status("tests")
 security_status := kind_status("security")
 
+maturity_rank("EXPERIMENTAL") := 0
+maturity_rank("FUNCTIONAL") := 1
+maturity_rank("PRODUCTION") := 2
+maturity_rank("COMMERCIAL") := 3
+maturity_rank("CRITICAL") := 4
+
+default maturity_targets := {}
+maturity_targets := input.standard.maturity.targets if {
+  input.standard.maturity.targets
+}
+
+default maturity_actual := {}
+maturity_actual := input.maturity if {
+  input.maturity
+}
+
+maturity_dimensions := {dimension | maturity_targets[dimension]}
+missing_maturity := {dimension |
+  some dimension in maturity_dimensions
+  not maturity_actual[dimension]
+}
+failed_maturity := [dimension |
+  some dimension in maturity_dimensions
+  actual := maturity_actual[dimension]
+  target := maturity_targets[dimension]
+  maturity_rank(actual) < maturity_rank(target)
+]
+
+default maturity_status := "UNKNOWN"
+
+maturity_status := "FAIL" if {
+  count(failed_maturity) > 0
+}
+
+maturity_status := "PASS" if {
+  count(maturity_dimensions) > 0
+  count(missing_maturity) == 0
+  count(failed_maturity) == 0
+}
+
 default commercial_readiness := "UNKNOWN"
 
 commercial_readiness := "BLOCKED" if {
@@ -150,24 +190,32 @@ commercial_readiness := "FAIL" if {
   verdict == "FAIL"
 }
 
+commercial_readiness := "FAIL" if {
+  verdict != "BLOCKED"
+  verdict != "FAIL"
+  maturity_status == "FAIL"
+}
+
 commercial_readiness := "PASS" if {
   verdict == "PASS"
   requirement_status == "PASS"
   design_status == "PASS"
   engineering_status == "PASS"
   security_status == "PASS"
+  maturity_status == "PASS"
 }
 
 missing_evidence_gaps := [sprintf("missing-evidence:%s", [kind]) | some kind in missing_evidence]
-
 requirement_gaps := ["requirement-coverage:unknown" | requirement_status == "UNKNOWN"]
 design_gaps := ["design-verification:unknown" | design_status == "UNKNOWN"]
 engineering_gaps := ["engineering-verification:unknown" | engineering_status == "UNKNOWN"]
 security_gaps := ["security-verification:unknown" | security_status == "UNKNOWN"]
+maturity_unknown_gaps := [sprintf("maturity:%s:unknown", [dimension]) | some dimension in missing_maturity]
+maturity_failed_gaps := [sprintf("maturity:%s:below-target", [dimension]) | some dimension in failed_maturity]
 
 known_gaps := array.concat(
-  array.concat(missing_evidence_gaps, requirement_gaps),
-  array.concat(array.concat(design_gaps, engineering_gaps), security_gaps),
+  array.concat(array.concat(missing_evidence_gaps, requirement_gaps), array.concat(design_gaps, engineering_gaps)),
+  array.concat(array.concat(security_gaps, maturity_unknown_gaps), maturity_failed_gaps),
 )
 
 default confidence := 0
@@ -184,6 +232,8 @@ result := {
   "engineeringStatus": engineering_status,
   "securityStatus": security_status,
   "evidenceStatus": evidence_status,
+  "maturityStatus": maturity_status,
+  "maturity": maturity_actual,
   "commercialReadiness": commercial_readiness,
   "knownGaps": known_gaps,
   "confidence": confidence,
