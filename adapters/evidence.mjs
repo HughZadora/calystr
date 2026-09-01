@@ -14,7 +14,9 @@ function canonical(value) {
 }
 
 export function evidenceDigest(payload) {
-  return `sha256:${createHash('sha256').update(JSON.stringify(canonical(payload))).digest('hex')}`;
+  return `sha256:${createHash('sha256')
+    .update(JSON.stringify(canonical(payload)))
+    .digest('hex')}`;
 }
 
 export function makeEvidence({
@@ -44,7 +46,10 @@ export function verifyEvidenceIntegrity(evidence) {
 
 const trustedProviders = Object.freeze({
   git: [['git', 'git']],
-  tests: [['junit', 'junit-adapter'], ['tap', 'tap-adapter']],
+  tests: [
+    ['junit', 'junit-adapter'],
+    ['tap', 'tap-adapter']
+  ],
   security: [['sarif', 'sarif-adapter']],
   sbom: [['cyclonedx', 'cyclonedx-adapter']],
   operations: [['operations-verification', 'calystr-operations-verifier']],
