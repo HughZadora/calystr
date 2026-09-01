@@ -14,8 +14,16 @@
     "type": "git",
     "url": "https://github.com/HughZadora/calystr.git"
   },
+  "packageManager": "pnpm@12.1.0",
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "24.20.0",
+      "onFail": "download"
+    }
+  },
   "engines": {
-    "node": ">=24"
+    "node": ">=24.20.0 <25"
   },
   "bin": {
     "calystr": "compiler/package/cli.mjs"
@@ -31,7 +39,7 @@
     "lint:links": "markdown-link-check -q -c .markdown-link-check.json README.md AGENTS.md CHANGELOG.md CONTRIBUTING.md SECURITY.md adapters compiler docs examples mappings model policy sources standard tests .github",
     "typecheck": "tsc --noEmit",
     "quality:diff": "lint-staged --continue-on-error",
-    "quality:all": "npm run format:check && npm run lint:eslint && npm run lint:markdown && npm run lint:links && npm run typecheck"
+    "quality:all": "pnpm run format:check && pnpm run lint:eslint && pnpm run lint:markdown && pnpm run lint:links && pnpm run typecheck"
   },
   "pi": {
     "extensions": [
