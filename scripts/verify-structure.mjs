@@ -20,4 +20,8 @@ if (packageJson.name !== 'calystr') throw new Error('package name must be calyst
 if (packageJson.license === 'MIT') throw new Error('MIT licence is prohibited');
 if (!packageJson.pi?.extensions?.includes('adapters/pi/extensions/calystr.ts')) throw new Error('Pi extension wiring missing');
 if (!packageJson.pi?.skills?.includes('adapters/pi/skills')) throw new Error('Pi skills wiring missing');
+const cueModule = await readFile('cue.mod/module.cue', 'utf8');
+const moduleMatch = cueModule.match(/module:\s*"([^"]+)"/);
+if (!moduleMatch) throw new Error('CUE module identity missing');
+if (/[A-Z]/.test(moduleMatch[1])) throw new Error('CUE module path must be lowercase');
 console.log(`Calystr Phase 1 structure verified and Pi package wiring present (${required.length} boundaries).`);
