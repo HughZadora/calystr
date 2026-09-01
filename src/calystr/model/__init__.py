@@ -10,6 +10,7 @@ from .entities import (
     Solution,
     Standard,
 )
+from .validation import validate_entities
 
 __all__ = [
     "Assessment",
@@ -20,4 +21,5 @@ __all__ = [
     "RequirementKind",
     "Solution",
     "Standard",
+    "validate_entities",
 ]
