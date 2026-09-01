@@ -20,7 +20,9 @@ function summariseVerification(stdout) {
 
   const predicateTypes = [...new Set(results.map((item) => item?.verificationResult?.statement?.predicateType).filter(Boolean))];
   const verifiedTimestamps = results.reduce(
-    (count, item) => count + (Array.isArray(item?.verificationResult?.verifiedTimestamps) ? item.verificationResult.verifiedTimestamps.length : 0),
+    (count, item) =>
+      count +
+      (Array.isArray(item?.verificationResult?.verifiedTimestamps) ? item.verificationResult.verifiedTimestamps.length : 0),
     0
   );
 
@@ -31,14 +33,7 @@ function summariseVerification(stdout) {
   };
 }
 
-export function collectReleaseProvenanceEvidence({
-  artifact,
-  repository,
-  revision,
-  signerWorkflow,
-  cwd = process.cwd(),
-  ghPath = 'gh'
-}) {
+export function collectReleaseProvenanceEvidence({ artifact, repository, revision, signerWorkflow, cwd = process.cwd(), ghPath = 'gh' }) {
   assertInput(artifact, 'artifact');
   assertInput(repository, 'repository');
   assertInput(revision, 'revision');

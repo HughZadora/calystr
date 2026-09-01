@@ -3,12 +3,7 @@ import { createHash } from 'node:crypto';
 function canonical(value) {
   if (Array.isArray(value)) return value.map(canonical);
   if (value && typeof value === 'object') {
-    return Object.fromEntries(
-      Object.keys(value)
-        .sort()
-        .filter((key) => value[key] !== undefined)
-        .map((key) => [key, canonical(value[key])])
-    );
+    return Object.fromEntries(Object.keys(value).sort().filter((key) => value[key] !== undefined).map((key) => [key, canonical(value[key])]));
   }
   return value;
 }
@@ -44,10 +39,7 @@ export function verifyEvidenceIntegrity(evidence) {
 
 const trustedProviders = Object.freeze({
   git: [['git', 'git']],
-  tests: [
-    ['junit', 'junit-adapter'],
-    ['tap', 'tap-adapter']
-  ],
+  tests: [['junit', 'junit-adapter'], ['tap', 'tap-adapter']],
   security: [['sarif', 'sarif-adapter']],
   sbom: [['cyclonedx', 'cyclonedx-adapter']],
   operations: [['operations-verification', 'calystr-operations-verifier']],
