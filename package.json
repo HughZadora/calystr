@@ -14,7 +14,6 @@
     "type": "git",
     "url": "https://github.com/HughZadora/calystr.git"
   },
-  "packageManager": "pnpm@12.1.0",
   "devEngines": {
     "runtime": {
       "name": "node",
