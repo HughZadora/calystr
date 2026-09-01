@@ -1,0 +1,41 @@
+[
+  {
+    "id":"stripe-payments",
+    "identity":"Stripe Payments",
+    "source":"https://stripe.com/",
+    "licence":"commercial-service",
+    "capabilities":["payments","refunds","payment-webhooks"],
+    "compatibility":{"web":true,"api":true,"saas":true},
+    "maturitySignals":{"productionUse":"high","documentation":"high","ecosystem":"high"},
+    "risks":["external-service-dependency","transaction-fees"],
+    "costs":{"integration":"low","operations":"low","service":"usage-based"},
+    "advantages":["mature payment APIs","webhook support","broad payment-method support"],
+    "disadvantages":["external dependency","commercial fees"]
+  },
+  {
+    "id":"postgresql",
+    "identity":"PostgreSQL",
+    "source":"https://www.postgresql.org/",
+    "licence":"PostgreSQL",
+    "capabilities":["relational-storage","transactions","concurrency-control"],
+    "compatibility":{"web":true,"api":true,"saas":true},
+    "maturitySignals":{"productionUse":"high","documentation":"high","ecosystem":"high"},
+    "risks":["operational-database-responsibility"],
+    "costs":{"integration":"low","operations":"medium","service":"deployment-dependent"},
+    "advantages":["transactional integrity","mature ecosystem","portable data model"],
+    "disadvantages":["requires database operations or managed provider"]
+  },
+  {
+    "id":"keycloak",
+    "identity":"Keycloak",
+    "source":"https://www.keycloak.org/",
+    "licence":"Apache-2.0",
+    "capabilities":["authentication","identity","oidc","sso"],
+    "compatibility":{"web":true,"api":true,"saas":true},
+    "maturitySignals":{"productionUse":"high","documentation":"high","ecosystem":"high"},
+    "risks":["identity-service-operations"],
+    "costs":{"integration":"medium","operations":"medium","service":"self-hosted-or-managed"},
+    "advantages":["standards-based identity","OIDC/SAML support","mature administration"],
+    "disadvantages":["operational complexity compared with hosted auth"]
+  }
+]
