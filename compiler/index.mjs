@@ -14,6 +14,6 @@ export async function compileIntent(intent, options = {}) {
   const capabilities = buildCapabilityGraph(requirement);
   const mapped = await mapKnowledge({ requirement, capabilities });
   const resolved = await resolveSolutions(mapped);
-  const compiled = validateCompiledProduct(await compileResolved({ ...resolved, quantification }));
+  const compiled = await validateCompiledProduct(await compileResolved({ ...resolved, quantification }));
   return packageCompiledProduct(compiled);
 }
