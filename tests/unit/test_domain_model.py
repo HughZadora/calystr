@@ -28,11 +28,17 @@ def test_complete_domain_graph_validates():
     validate_entities(make_graph())
 
 
-def test_unknown_reference_is_rejected():
+def test_unknown_collection_reference_is_rejected():
     requirement = Requirement("REQ-001", "System shall be verifiable.", RequirementKind.FUNCTIONAL)
     capability = Capability("CAP-001", "Verification", "Provides verification.", ("REQ-404",))
     with pytest.raises(ValueError, match="unknown ids"):
         validate_entities((requirement, capability))
+
+
+def test_unknown_singular_reference_is_rejected():
+    design = Design("DSN-001", "Reference design", "SOL-404")
+    with pytest.raises(ValueError, match="unknown id"):
+        validate_entities((design,))
 
 
 def test_duplicate_ids_are_rejected():

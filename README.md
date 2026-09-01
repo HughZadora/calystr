@@ -4,7 +4,9 @@ Commercial Product Standard Compiler — compile engineering, product design and
 
 ## Status
 
-Phase 0 — repository and architecture foundation.
+**Phase 1 — architecture and domain foundation.**
+
+The repository topology is established before feature implementation. The canonical domain model and its validation boundary are now executable and covered by unit tests. Continuous integration runs the test suite on pushes and pull requests to `main`.
 
 ## Repository principles
 

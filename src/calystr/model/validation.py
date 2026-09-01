@@ -11,7 +11,7 @@ _ENTITY_TYPES = (Requirement, Capability, Solution, Design, Standard, Evidence, 
 
 
 def validate_entities(entities: Iterable[object]) -> None:
-    """Validate common identity and reference invariants across domain entities."""
+    """Validate identity and reference invariants across domain entities."""
     items = tuple(entities)
     ids: set[str] = set()
     for entity in items:
@@ -31,5 +31,8 @@ def validate_entities(entities: Iterable[object]) -> None:
                 missing = [ref for ref in value if ref not in ids]
                 if missing:
                     raise ValueError(f"{entity.id} references unknown ids: {missing}")
+            elif field.name.endswith("_ref") and value and value not in ids:
+                raise ValueError(f"{entity.id} references unknown id: {value}")
+
         if isinstance(entity, Evidence) and not entity.digest:
             raise ValueError(f"Evidence {entity.id} must have a digest")
