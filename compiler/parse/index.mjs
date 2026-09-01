@@ -9,7 +9,8 @@ const capabilityRules = [
 
 function inferCapabilities(intent) {
   const capabilities = capabilityRules.filter(([pattern]) => pattern.test(intent)).map(([, capability]) => capability);
-  if (capabilities.includes('booking') && !capabilities.includes('relational-storage')) capabilities.push('relational-storage');
+  if (capabilities.includes('booking') && !capabilities.includes('relational-storage'))
+    capabilities.push('relational-storage');
   return [...new Set(capabilities)].sort();
 }
 

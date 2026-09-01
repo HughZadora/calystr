@@ -8,11 +8,6 @@
     "sources/**/*.mjs",
     "standard/**/*.mjs"
   ],
-  "exclude": [
-    "tests/**"
-  ],
-  "reporter": [
-    "text",
-    "json-summary"
-  ]
+  "exclude": ["tests/**"],
+  "reporter": ["text", "json-summary"]
 }

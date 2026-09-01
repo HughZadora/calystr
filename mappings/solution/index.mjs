@@ -20,25 +20,44 @@ function dimension(value) {
 export async function evaluateSolutions({ capabilities, projectType = 'saas', disallowedLicences = [] }) {
   const requested = new Set(capabilities);
   const registry = await loadSolutionRegistry();
-  return registry.map((candidate) => {
-    const covered = candidate.capabilities.filter((capability) => requested.has(capability));
-    const coverage = requested.size === 0 ? 0 : covered.length / requested.size;
-    const compatibility = candidate.compatibility?.[projectType] ? 1 : 0;
-    const maturity = (dimension(candidate.maturitySignals.productionUse) + dimension(candidate.maturitySignals.documentation) + dimension(candidate.maturitySignals.ecosystem)) / 3;
-    const licenceAllowed = !disallowedLicences.includes(candidate.licence);
-    const fitness = { coverage, compatibility, maturity, licenceAllowed };
-    const decision = !licenceAllowed ? 'BUILD' : coverage === 1 && compatibility === 1 ? 'ADOPT' : coverage > 0 ? 'ADAPT' : 'BUILD';
-    return { ...candidate, fitness, decision, coveredCapabilities: covered };
-  }).sort((a, b) => {
-    const score = (item) => (item.fitness.licenceAllowed ? 1 : 0) * (item.fitness.coverage * 0.5 + item.fitness.compatibility * 0.2 + item.fitness.maturity * 0.3);
-    return score(b) - score(a);
-  });
+  return registry
+    .map((candidate) => {
+      const covered = candidate.capabilities.filter((capability) => requested.has(capability));
+      const coverage = requested.size === 0 ? 0 : covered.length / requested.size;
+      const compatibility = candidate.compatibility?.[projectType] ? 1 : 0;
+      const maturity =
+        (dimension(candidate.maturitySignals.productionUse) +
+          dimension(candidate.maturitySignals.documentation) +
+          dimension(candidate.maturitySignals.ecosystem)) /
+        3;
+      const licenceAllowed = !disallowedLicences.includes(candidate.licence);
+      const fitness = { coverage, compatibility, maturity, licenceAllowed };
+      const decision = !licenceAllowed
+        ? 'BUILD'
+        : coverage === 1 && compatibility === 1
+          ? 'ADOPT'
+          : coverage > 0
+            ? 'ADAPT'
+            : 'BUILD';
+      return { ...candidate, fitness, decision, coveredCapabilities: covered };
+    })
+    .sort((a, b) => {
+      const score = (item) =>
+        (item.fitness.licenceAllowed ? 1 : 0) *
+        (item.fitness.coverage * 0.5 + item.fitness.compatibility * 0.2 + item.fitness.maturity * 0.3);
+      return score(b) - score(a);
+    });
 }
 
 export async function recommendSolution(input) {
   const ranked = await evaluateSolutions(input);
   const best = ranked.find((item) => item.fitness.coverage > 0 && item.fitness.licenceAllowed);
-  if (!best) return { decision: 'BUILD', candidate: null, why: 'No suitable mature registered solution covers the requested capability under the supplied constraints.' };
+  if (!best)
+    return {
+      decision: 'BUILD',
+      candidate: null,
+      why: 'No suitable mature registered solution covers the requested capability under the supplied constraints.'
+    };
   return {
     decision: best.decision,
     candidate: best.id,

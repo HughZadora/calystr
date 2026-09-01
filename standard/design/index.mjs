@@ -1,14 +1,30 @@
 const designModes = Object.freeze(['PERSUADE', 'OPERATE', 'READ', 'EXPERIENCE']);
 
 export const designCriteria = Object.freeze([
-  'purpose', 'clarity', 'hierarchy', 'consistency', 'accessibility', 'responsiveness',
-  'interaction', 'content', 'recovery', 'craft', 'performance', 'implementationIntegrity'
+  'purpose',
+  'clarity',
+  'hierarchy',
+  'consistency',
+  'accessibility',
+  'responsiveness',
+  'interaction',
+  'content',
+  'recovery',
+  'craft',
+  'performance',
+  'implementationIntegrity'
 ]);
 
 export function classifySurface({ kind }) {
   const map = {
-    landing: 'PERSUADE', marketing: 'PERSUADE', dashboard: 'OPERATE', admin: 'OPERATE',
-    documentation: 'READ', article: 'READ', portfolio: 'EXPERIENCE', showcase: 'EXPERIENCE'
+    landing: 'PERSUADE',
+    marketing: 'PERSUADE',
+    dashboard: 'OPERATE',
+    admin: 'OPERATE',
+    documentation: 'READ',
+    article: 'READ',
+    portfolio: 'EXPERIENCE',
+    showcase: 'EXPERIENCE'
   };
   return map[kind] ?? 'OPERATE';
 }
