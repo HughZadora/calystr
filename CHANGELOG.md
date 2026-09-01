@@ -5,6 +5,7 @@
 - Made current date/platform discovery, official support lookup, runtime resolution and dependency compatibility mandatory before configuration generation.
 - Standardised commodity quality gates on maintained stack-native ecosystem tooling and moved the GitHub Actions runtime to Node 24-compatible action generations.
 - Added GitHub/Sigstore release provenance generation and `gh attestation verify` evidence normalisation so `CRITICAL` changes can satisfy the required `release-provenance` gate without custom cryptography.
+- Began the pnpm 12 toolchain migration with Node 24.20.0 runtime pinning, frozen dependency locking, one-day package maturity enforcement and removal of legacy peer-dependency escape paths.
 
 ## 1.0.0
 
