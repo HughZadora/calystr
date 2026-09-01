@@ -4,17 +4,24 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 7
     groups:
       quality-toolchain:
         patterns:
+          - c8
           - eslint
+          - knip
           - lint-staged
           - markdown-link-check
           - markdownlint-cli2
           - prettier
+          - publint
           - typescript
           - typescript-eslint
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 7

@@ -13,7 +13,7 @@ function canonical(value) {
   return value;
 }
 
-export function evidenceDigest(payload) {
+function evidenceDigest(payload) {
   return `sha256:${createHash('sha256')
     .update(JSON.stringify(canonical(payload)))
     .digest('hex')}`;

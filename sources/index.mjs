@@ -9,7 +9,7 @@ export async function loadSourceCatalogue() {
   return sources;
 }
 
-export function validateSources(sources) {
+function validateSources(sources) {
   const ids = new Set();
   for (const source of sources) {
     for (const field of ['id', 'layer', 'reference', 'provenance', 'reuse', 'version', 'licenceStatus']) {
@@ -20,8 +20,4 @@ export function validateSources(sources) {
     ids.add(source.id);
   }
   return sources;
-}
-
-export async function sourceById(id) {
-  return (await loadSourceCatalogue()).find((source) => source.id === id) ?? null;
 }

@@ -1,0 +1,13 @@
+{
+  "all": true,
+  "include": [
+    "adapters/**/*.mjs",
+    "compiler/**/*.mjs",
+    "mappings/**/*.mjs",
+    "policy/**/*.mjs",
+    "sources/**/*.mjs",
+    "standard/**/*.mjs"
+  ],
+  "exclude": ["tests/**"],
+  "reporter": ["text", "json-summary"]
+}

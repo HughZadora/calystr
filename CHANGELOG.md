@@ -3,8 +3,11 @@
 ## Unreleased
 
 - Made current date/platform discovery, official support lookup, runtime resolution and dependency compatibility mandatory before configuration generation.
-- Standardised commodity quality gates on maintained stack-native ecosystem tooling and moved the GitHub Actions runtime to Node 24-compatible action generations.
+- Standardised commodity quality gates on maintained stack-native ecosystem tooling and moved GitHub Actions onto Node-24-compatible action generations.
 - Added GitHub/Sigstore release provenance generation and `gh attestation verify` evidence normalisation so `CRITICAL` changes can satisfy the required `release-provenance` gate without custom cryptography.
+- Migrated the repository to pnpm 12.1.0 with Node 24.20.0 runtime pinning, frozen dependency locking, one-day package maturity enforcement and no legacy peer-dependency escape paths.
+- Replaced ceremonial yq/sq CI checks with stack-specific actionlint, zizmor, Gitleaks, OSV-Scanner, Knip, publint, c8 and native pnpm CycloneDX SBOM verification.
+- Advanced the CUE validation toolchain and module language target from 0.14 to the current stable 0.17 line.
 
 ## 1.0.0
 

@@ -1,13 +1,27 @@
-export const runtimeStates = Object.freeze(['ACTIVE', 'COMPLETE', 'BLOCKED', 'CANCELLED']);
+const runtimeStates = Object.freeze(['ACTIVE', 'COMPLETE', 'BLOCKED', 'CANCELLED']);
 
 export const requiredHarnessCapabilities = Object.freeze([
-  'session', 'goal', 'context', 'skill-loading', 'tool-execution', 'subagent', 'resume', 'handoff'
+  'session',
+  'goal',
+  'context',
+  'skill-loading',
+  'tool-execution',
+  'subagent',
+  'resume',
+  'handoff'
 ]);
 
 export function createHandoff({ status, summary, verified = [], openItems = [], blockers = [], nextSteps = [] }) {
   if (!runtimeStates.includes(status)) throw new Error(`Invalid handoff status: ${status}`);
   if (!summary?.trim()) throw new Error('Handoff summary is required');
-  return Object.freeze({ status, summary, verified: [...verified], openItems: [...openItems], blockers: [...blockers], nextSteps: [...nextSteps] });
+  return Object.freeze({
+    status,
+    summary,
+    verified: [...verified],
+    openItems: [...openItems],
+    blockers: [...blockers],
+    nextSteps: [...nextSteps]
+  });
 }
 
 export function createRuntimeTrace({ sessionId, goalId, runId, round, step }) {

@@ -4,7 +4,7 @@ import { engineeringConfigurationContract } from './engineering/toolchain.mjs';
 
 const catalogueUrl = new URL('./catalog.json', import.meta.url);
 
-export async function loadStandardCatalogue() {
+async function loadStandardCatalogue() {
   return JSON.parse(await readFile(catalogueUrl, 'utf8'));
 }
 
