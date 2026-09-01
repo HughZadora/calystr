@@ -27,7 +27,7 @@ export function verifyEvidenceIntegrity(evidence) {
 
 const trustedProviders = Object.freeze({
   git: [['git', 'git']],
-  tests: [['junit', 'junit-adapter']],
+  tests: [['junit', 'junit-adapter'], ['tap', 'tap-adapter']],
   security: [['sarif', 'sarif-adapter']],
   sbom: [['cyclonedx', 'cyclonedx-adapter']],
   operations: [['operations-verification', 'calystr-operations-verifier']]
