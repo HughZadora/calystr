@@ -18,5 +18,6 @@ Calystr is developed through GitHub branches and pull requests.
 - markdownlint checks changed Markdown files.
 - markdown-link-check checks links in changed Markdown files; `npm run lint:links` checks all repository Markdown.
 - yq validates YAML structure in CI.
-- sq parses repository JSON catalogues in CI as an independent structured-data check.
+- sq parses array-shaped repository JSON registries in CI as an independent structured-data check.
+- CI uses Node 22 for the quality toolchain and Go 1.26 for current yq/sq compatibility.
 - `npm run quality:changed` runs the changed-file quality gate used by CI.
