@@ -31,7 +31,7 @@ Before introducing a new gate or generating its configuration, resolve the curre
 - yq validates YAML structure in CI.
 - sq independently inspects structured JSON registries in CI.
 - CUE validates Calystr schemas and constraints.
-- OPA is the sole policy and assessment engine.
+- OPA is the sole policy and assessment engine. Project tests exercise the real OPA boundary, so CI must install OPA before running the Node test suite.
 - Node's built-in test runner executes project-specific behavioural and architecture invariant tests.
 - CI uses Node 24 and current Node-24-compatible GitHub Actions.
 

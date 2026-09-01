@@ -25,6 +25,11 @@ jobs:
         run: npm run quality:diff -- --diff="${{ github.event.pull_request.base.sha || github.event.before }}...HEAD"
       - name: Type-check TypeScript boundary
         run: npm run typecheck
+      - name: Install OPA
+        run: |
+          curl -fsSL -o /usr/local/bin/opa https://github.com/open-policy-agent/opa/releases/download/v1.20.1/opa_linux_amd64_static
+          chmod +x /usr/local/bin/opa
+          opa version
       - name: Run project tests
         run: npm test
       - uses: actions/setup-go@v7
@@ -36,11 +41,6 @@ jobs:
           go install cuelang.org/go/cmd/cue@v0.14.1
           go install github.com/mikefarah/yq/v4@v4.53.3
           go install github.com/neilotoole/sq@v0.50.2
-      - name: Install OPA
-        run: |
-          curl -fsSL -o /usr/local/bin/opa https://github.com/open-policy-agent/opa/releases/download/v1.20.1/opa_linux_amd64_static
-          chmod +x /usr/local/bin/opa
-          opa version
       - name: Verify yq and sq against repository data
         run: |
           yq --version
