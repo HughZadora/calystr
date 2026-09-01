@@ -50,6 +50,7 @@ const trustedProviders = Object.freeze({
     ['junit', 'junit-adapter'],
     ['tap', 'tap-adapter']
   ],
+  design: [['playwright', 'playwright-json-adapter']],
   security: [['sarif', 'sarif-adapter']],
   sbom: [['cyclonedx', 'cyclonedx-adapter']],
   operations: [['operations-verification', 'calystr-operations-verifier']],

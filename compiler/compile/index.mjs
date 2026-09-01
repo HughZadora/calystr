@@ -1,5 +1,5 @@
 import { composeStandard } from '../../standard/index.mjs';
-import { classifySurface } from '../../standard/design/index.mjs';
+import { classifySurface, designVerificationContract } from '../../standard/design/index.mjs';
 import { adviseUnknowns, assertBusinessOnlyQuestions } from '../resolve/advisor.mjs';
 import { createImplementationPlan } from './plan.mjs';
 
@@ -19,7 +19,8 @@ function designFor(requirement) {
     visual: { authority: 'create-unless-existing-authority-is-detected' },
     accessibility: { required: true },
     responsive: { required: true },
-    content: { clarity: 'required', errorRecovery: 'required' }
+    content: { clarity: 'required', errorRecovery: 'required' },
+    verification: designVerificationContract()
   };
 }
 

@@ -1,14 +1,32 @@
 export const designModes = Object.freeze(['PERSUADE', 'OPERATE', 'READ', 'EXPERIENCE']);
 
 export const designCriteria = Object.freeze([
-  'purpose', 'clarity', 'hierarchy', 'consistency', 'accessibility', 'responsiveness',
-  'interaction', 'content', 'recovery', 'craft', 'performance', 'implementationIntegrity'
+  'purpose',
+  'clarity',
+  'hierarchy',
+  'consistency',
+  'accessibility',
+  'responsiveness',
+  'interaction',
+  'content',
+  'recovery',
+  'craft',
+  'performance',
+  'implementationIntegrity'
 ]);
+
+export const designVerificationDimensions = Object.freeze(['browser', 'accessibility', 'responsive', 'user-journey']);
 
 export function classifySurface({ kind }) {
   const map = {
-    landing: 'PERSUADE', marketing: 'PERSUADE', dashboard: 'OPERATE', admin: 'OPERATE',
-    documentation: 'READ', article: 'READ', portfolio: 'EXPERIENCE', showcase: 'EXPERIENCE'
+    landing: 'PERSUADE',
+    marketing: 'PERSUADE',
+    dashboard: 'OPERATE',
+    admin: 'OPERATE',
+    documentation: 'READ',
+    article: 'READ',
+    portfolio: 'EXPERIENCE',
+    showcase: 'EXPERIENCE'
   };
   return map[kind] ?? 'OPERATE';
 }
@@ -22,6 +40,16 @@ export function verifyDesign(design) {
   const statuses = Object.values(checks);
   const verdict = statuses.includes('FAIL') ? 'FAIL' : statuses.includes('UNKNOWN') ? 'UNKNOWN' : 'PASS';
   return { verdict, checks };
+}
+
+export function designVerificationContract() {
+  return Object.freeze({
+    criteriaSource: ['apple-hig', 'impeccable'],
+    evidenceAuthority: 'external-runner',
+    runner: 'playwright',
+    dimensions: [...designVerificationDimensions],
+    agentClaimsAreEvidence: false
+  });
 }
 
 export function requiredInteractionStates(surfaceMode) {
