@@ -1,12 +1,16 @@
-import type { ExtensionAPI, ExtensionContext } from '@mariozechner/pi-coding-agent';
+import type { ExtensionAPI, ExtensionContext } from '@earendil-works/pi-coding-agent';
 import { compileIntent } from '../../../compiler/index.mjs';
 
 function formatAdvice(advice: any[]): string {
   if (!advice.length) return 'Business decisions: none required';
-  return advice.map((item) => {
-    const options = item.options.map((option: any) => `  - ${option.id}: ${option.label} — ${option.tradeOffs.join('; ')}`).join('\n');
-    return [`Decision: ${item.question}`, options, `Recommendation: ${item.recommendation}`, `Reason: ${item.reason}`].join('\n');
-  }).join('\n\n');
+  return advice
+    .map((item) => {
+      const options = item.options
+        .map((option: any) => `  - ${option.id}: ${option.label} — ${option.tradeOffs.join('; ')}`)
+        .join('\n');
+      return [`Decision: ${item.question}`, options, `Recommendation: ${item.recommendation}`, `Reason: ${item.reason}`].join('\n');
+    })
+    .join('\n\n');
 }
 
 export default function calystrExtension(pi: ExtensionAPI): void {
@@ -20,7 +24,9 @@ export default function calystrExtension(pi: ExtensionAPI): void {
       }
       try {
         const output = await compileIntent(intent);
-        const solutions = output.compiled.solutions.map((item: any) => `${item.capability}: ${item.decision}${item.candidate ? ` (${item.candidate})` : ''} — ${item.why}`).join('\n');
+        const solutions = output.compiled.solutions
+          .map((item: any) => `${item.capability}: ${item.decision}${item.candidate ? ` (${item.candidate})` : ''} — ${item.why}`)
+          .join('\n');
         const message = [
           '[Calystr executable product standard]',
           `Requirement: ${output.compiled.requirement.intent}`,
