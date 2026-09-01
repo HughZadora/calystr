@@ -29,6 +29,7 @@
   },
   "scripts": {
     "test": "node scripts/verify-structure.mjs && node --test",
+    "coverage": "c8 node --test",
     "verify:structure": "node scripts/verify-structure.mjs",
     "golden": "node compiler/package/cli.mjs golden",
     "format": "prettier --write .",
@@ -36,9 +37,12 @@
     "lint:eslint": "eslint .",
     "lint:markdown": "markdownlint-cli2 \"**/*.md\" \"!node_modules/**\"",
     "lint:links": "markdown-link-check -q -c .markdown-link-check.json README.md AGENTS.md CHANGELOG.md CONTRIBUTING.md SECURITY.md adapters compiler docs examples mappings model policy sources standard tests .github",
+    "lint:dead-code": "knip",
+    "lint:package": "publint",
     "typecheck": "tsc --noEmit",
+    "sbom": "pnpm sbom --sbom-format cyclonedx --sbom-spec-version 1.7",
     "quality:diff": "lint-staged --continue-on-error",
-    "quality:all": "pnpm run format:check && pnpm run lint:eslint && pnpm run lint:markdown && pnpm run lint:links && pnpm run typecheck"
+    "quality:all": "pnpm run format:check && pnpm run lint:eslint && pnpm run lint:markdown && pnpm run lint:links && pnpm run typecheck && pnpm run lint:dead-code && pnpm run lint:package"
   },
   "pi": {
     "extensions": [
@@ -53,11 +57,14 @@
   },
   "devDependencies": {
     "@earendil-works/pi-coding-agent": "0.84.4",
+    "c8": "12.0.0",
     "eslint": "10.9.1",
+    "knip": "6.31.0",
     "lint-staged": "17.4.1",
     "markdown-link-check": "3.15.0",
     "markdownlint-cli2": "0.23.2",
     "prettier": "3.9.6",
+    "publint": "0.3.24",
     "typescript": "6.0.3",
     "typescript-eslint": "8.68.0"
   },

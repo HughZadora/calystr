@@ -1,0 +1,15 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "entry": [
+    "adapters/pi/extensions/calystr.ts",
+    "compiler/package/cli.mjs",
+    "scripts/verify-structure.mjs",
+    "tests/**/*.test.mjs"
+  ],
+  "project": [
+    "**/*.{js,mjs,ts}"
+  ],
+  "ignore": [
+    "node_modules/**"
+  ]
+}
