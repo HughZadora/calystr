@@ -1,5 +1,6 @@
 import { composeStandard } from '../../standard/index.mjs';
 import { classifySurface } from '../../standard/design/index.mjs';
+import { adviseUnknowns, assertBusinessOnlyQuestions } from '../resolve/advisor.mjs';
 
 function designFor(requirement) {
   const surfaces = [];
@@ -31,12 +32,14 @@ function verificationFor(requirement) {
 
 export async function compileResolved(resolved) {
   const standard = await composeStandard({ version: '1.0.0', changeClass: resolved.requirement.changeClass });
+  const advice = assertBusinessOnlyQuestions(adviseUnknowns(resolved.requirement.unknowns));
   return {
     schemaVersion: '1.0.0',
     compilerVersion: '1.0.0',
     requirement: resolved.requirement,
     capabilities: resolved.capabilities,
     solutions: resolved.solutions,
+    advice,
     design: designFor(resolved.requirement),
     standard,
     verification: verificationFor(resolved.requirement),
