@@ -1,0 +1,39 @@
+name: Release provenance
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  attest:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+      artifact-metadata: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: '.node-version'
+      - name: Pack release artifact
+        id: pack
+        run: |
+          npm pack --json > /tmp/npm-pack.json
+          node -e "const fs=require('fs'); const [p]=JSON.parse(fs.readFileSync('/tmp/npm-pack.json','utf8')); fs.appendFileSync(process.env.GITHUB_OUTPUT, 'artifact='+p.filename+'\\n')"
+      - name: Generate SLSA provenance attestation
+        uses: actions/attest@v4.2.2
+        with:
+          subject-path: '${{ steps.pack.outputs.artifact }}'
+      - name: Preserve packaged artifact
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          name: 'calystr-${{ github.ref_name }}'
+          path: '${{ steps.pack.outputs.artifact }}'
+          if-no-files-found: error
