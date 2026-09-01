@@ -23,6 +23,11 @@ jobs:
         run: npm install --ignore-scripts --no-audit --no-fund --legacy-peer-deps --package-lock=false
       - name: Run standard changed-file quality gates
         run: npm run quality:diff -- --diff="${{ github.event.pull_request.base.sha || github.event.before }}...HEAD"
+      - name: Print canonical Prettier output on formatting failure
+        if: failure()
+        run: |
+          npx --no-install prettier adapters/evidence.mjs
+          npx --no-install prettier tests/adversarial/evidence-integrity.test.mjs
       - name: Type-check TypeScript boundary
         run: npm run typecheck
       - name: Run project tests
