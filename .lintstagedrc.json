@@ -1,0 +1,8 @@
+{
+  "*.{js,mjs,cjs,ts,json,jsonc,md,yml,yaml}": "prettier --check",
+  "*.{js,mjs,cjs,ts}": "eslint",
+  "*.md": [
+    "markdownlint-cli2",
+    "markdown-link-check -q -c .markdown-link-check.json"
+  ]
+}

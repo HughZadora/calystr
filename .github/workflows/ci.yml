@@ -14,6 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v7
         with:
           node-version-file: '.node-version'
@@ -32,8 +34,10 @@ jobs:
           curl -fsSL -o /usr/local/bin/opa https://github.com/open-policy-agent/opa/releases/download/v1.20.1/opa_linux_amd64_static
           chmod +x /usr/local/bin/opa
           opa version
-      - name: Run standard quality toolchain
-        run: npm run quality
+      - name: Run standard changed-file quality gates
+        run: npm run quality:diff -- --diff="${{ github.event.pull_request.base.sha || github.event.before }}...HEAD"
+      - name: Type-check TypeScript boundary
+        run: npm run typecheck
       - name: Verify yq and sq against repository data
         run: |
           yq --version

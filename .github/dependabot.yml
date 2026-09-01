@@ -8,6 +8,7 @@ updates:
       quality-toolchain:
         patterns:
           - eslint
+          - lint-staged
           - markdown-link-check
           - markdownlint-cli2
           - prettier
