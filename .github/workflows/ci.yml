@@ -21,9 +21,16 @@ jobs:
           node-version-file: '.node-version'
       - name: Install Node toolchain
         run: npm install --ignore-scripts --no-audit --no-fund --legacy-peer-deps --package-lock=false
+      - name: Run standard changed-file quality gates
+        run: npm run quality:diff -- --diff="${{ github.event.pull_request.base.sha || github.event.before }}...HEAD"
+      - name: Type-check TypeScript boundary
+        run: npm run typecheck
+      - name: Run project tests
+        run: npm test
       - uses: actions/setup-go@v7
         with:
           go-version: '1.26.x'
+          cache: false
       - name: Install CUE and structured-data tools
         run: |
           go install cuelang.org/go/cmd/cue@v0.14.1
@@ -34,18 +41,12 @@ jobs:
           curl -fsSL -o /usr/local/bin/opa https://github.com/open-policy-agent/opa/releases/download/v1.20.1/opa_linux_amd64_static
           chmod +x /usr/local/bin/opa
           opa version
-      - name: Run standard changed-file quality gates
-        run: npm run quality:diff -- --diff="${{ github.event.pull_request.base.sha || github.event.before }}...HEAD"
-      - name: Type-check TypeScript boundary
-        run: npm run typecheck
       - name: Verify yq and sq against repository data
         run: |
           yq --version
           sq --version
           yq -e '.jobs.verify["runs-on"] == "ubuntu-latest"' .github/workflows/ci.yml >/dev/null
           cat mappings/solution/registry.json | sq inspect >/dev/null
-      - name: Run project tests
-        run: npm test
       - name: Validate CUE model
         run: cue vet ./...
       - name: Test OPA policy
