@@ -4,7 +4,12 @@
   "description": "Commercial Product Standard Compiler — compile engineering, product design and verification knowledge into executable standards for Pi.",
   "license": "Apache-2.0",
   "type": "module",
-  "keywords": ["pi-package", "commercial-product-standard", "agent-harness", "verification"],
+  "keywords": [
+    "pi-package",
+    "commercial-product-standard",
+    "agent-harness",
+    "verification"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/HughZadora/calystr.git"
@@ -29,8 +34,12 @@
     "quality:all": "npm run format:check && npm run lint:eslint && npm run lint:markdown && npm run lint:links && npm run typecheck"
   },
   "pi": {
-    "extensions": ["adapters/pi/extensions/calystr.ts"],
-    "skills": ["adapters/pi/skills"]
+    "extensions": [
+      "adapters/pi/extensions/calystr.ts"
+    ],
+    "skills": [
+      "adapters/pi/skills"
+    ]
   },
   "peerDependencies": {
     "@earendil-works/pi-coding-agent": ">=0.84.0 <1"

@@ -6,7 +6,10 @@ function formatAdvice(advice: any[]): string {
   return advice
     .map((item) => {
       const options = item.options
-        .map((option: any) => `  - ${option.id}: ${option.label} — ${option.tradeOffs.join('; ')}`)
+        .map(
+          (option: any) =>
+            `  - ${option.id}: ${option.label} — ${option.tradeOffs.join('; ')}`
+        )
         .join('\n');
       return [`Decision: ${item.question}`, options, `Recommendation: ${item.recommendation}`, `Reason: ${item.reason}`].join('\n');
     })
@@ -25,7 +28,10 @@ export default function calystrExtension(pi: ExtensionAPI): void {
       try {
         const output = await compileIntent(intent);
         const solutions = output.compiled.solutions
-          .map((item: any) => `${item.capability}: ${item.decision}${item.candidate ? ` (${item.candidate})` : ''} — ${item.why}`)
+          .map(
+            (item: any) =>
+              `${item.capability}: ${item.decision}${item.candidate ? ` (${item.candidate})` : ''} — ${item.why}`
+          )
           .join('\n');
         const message = [
           '[Calystr executable product standard]',
@@ -34,8 +40,10 @@ export default function calystrExtension(pi: ExtensionAPI): void {
           `Capabilities: ${output.compiled.requirement.capabilities.join(', ')}`,
           `Solution decisions:\n${solutions}`,
           formatAdvice(output.compiled.advice),
+          `Engineering initialization: ${output.compiled.engineering.initialization.sequence.join(' → ')}`,
           `Standard: ${output.manifest.standard}@${output.manifest.version}`,
-          'Proceed without asking for technical choices. Ask only the business decisions above when they are necessary to continue. Agent claims are not evidence; use runners/adapters and OPA for final assessment.'
+          'Before generating project configuration, resolve the current date/platform, official support, runtime requirements and dependency compatibility, then generate configuration once.',
+          'Proceed without asking for technical choices. Ask only business decisions that are necessary to continue. Agent claims are not evidence; use runners/adapters and OPA for final assessment.'
         ].join('\n');
         pi.sendUserMessage(message);
         ctx.ui.notify('Calystr standard context queued', 'info');
